@@ -2,7 +2,6 @@ import React from 'react';
 
 const steps = [
   {
-    image: '/assets/mobilescreens/post-task.jpg',
     title: 'Post a Task',
     highlight: 'Describe your task, location, and budget.',
     description:
@@ -10,7 +9,6 @@ const steps = [
     cta: 'Start your first task',
   },
   {
-    image: '/assets/mobilescreens/set-budget.jpg',
     title: 'Get Matched',
     highlight: 'Connect with trusted locals.',
     description:
@@ -18,7 +16,6 @@ const steps = [
     cta: 'See how matching works',
   },
   {
-    image: '/assets/mobilescreens/approve-task.jpg',
     title: 'Task Complete',
     highlight: 'Track and confirm completion.',
     description:
@@ -46,48 +43,117 @@ const HowItWorksSection = () => {
           justifyContent: 'space-between',
           gap: 32,
         }}>
-          {steps.map((step, idx) => (
-            <div
-              key={idx}
-              style={{
-                flex: '1 1 300px',
-                minWidth: 260,
-                maxWidth: 370,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-                padding: '0 8px',
-                background: 'none',
-              }}
-            >
-              {/* Step Number Badge */}
-              <div style={{ marginBottom: 24 }}>
-                <span style={{
-                  display: 'inline-block',
-                  background: '#2563EB',
-                  color: '#fff',
-                  fontWeight: 700,
-                  borderRadius: 999,
-                  padding: '6px 20px',
-                  fontSize: 20,
-                  boxShadow: '0 2px 8px #2563EB22',
-                }}>{idx + 1}</span>
-              </div>
-              {/* Step Image */}
-              <div style={{ marginBottom: 24, width: '100%', display: 'flex', justifyContent: 'center' }}>
-                <img
-                  src={step.image}
-                  alt={step.title}
-                  style={{ width: '100%', maxWidth: 260, height: 'auto', borderRadius: 16, boxShadow: '0 2px 12px #0001' }}
-                />
-              </div>
-              {/* Step Text */}
-              <h3 style={{ fontSize: 26, fontWeight: 800, color: '#1a202c', marginBottom: 10, fontFamily: 'Inter, sans-serif', lineHeight: 1.2 }}>{step.title}</h3>
-              <div style={{ fontSize: 18, fontWeight: 700, color: '#f9b233', marginBottom: 8, fontFamily: 'Inter, sans-serif' }}>{step.highlight}</div>
-              <p style={{ fontSize: 15, color: '#374151', marginBottom: 16, maxWidth: 320, marginLeft: 'auto', marginRight: 'auto', fontFamily: 'Inter, sans-serif' }}>{step.description}</p>
+          {/* Step 1 */}
+          <div
+            style={{
+              flex: '1 1 300px',
+              minWidth: 260,
+              maxWidth: 370,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              padding: '0 8px',
+              background: 'none',
+            }}
+          >
+            <div style={{ marginBottom: 24 }}>
+              <span style={{
+                display: 'inline-block',
+                background: '#000',
+                color: '#fff',
+                fontWeight: 700,
+                borderRadius: 999,
+                padding: '6px 20px',
+                fontSize: 20,
+                boxShadow: '0 2px 8px #2563EB22',
+              }}>1</span>
             </div>
-          ))}
+            <div style={{ marginBottom: 24, width: '100%', display: 'flex', justifyContent: 'center' }}>
+              <img
+                src={require('../assets/mobilescreens/post-task.jpg')}
+                alt={steps[0].title}
+                style={{ width: '100%', maxWidth: 320, height: 'auto', borderRadius: 16, boxShadow: '0 2px 12px #0001' }}
+              />
+            </div>
+            <h3 style={{ fontSize: 22, fontWeight: 900, color: '#1a202c', marginBottom: 10, fontFamily: 'Inter, sans-serif', lineHeight: 1.2 }}>{steps[0].title}</h3>
+            <div style={{ fontSize: 18, fontWeight: 700, color: '#f9b233', marginBottom: 8, fontFamily: 'Inter, sans-serif' }}>{steps[0].highlight}</div>
+            <p style={{ fontSize: 15, color: '#374151', marginBottom: 16, maxWidth: 320, marginLeft: 'auto', marginRight: 'auto', fontFamily: 'Inter, sans-serif' }}>{steps[0].description}</p>
+          </div>
+          {/* Step 2 */}
+          <div
+            style={{
+              flex: '1 1 300px',
+              minWidth: 260,
+              maxWidth: 370,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              padding: '0 8px',
+              background: 'none',
+            }}
+          >
+            <div style={{ marginBottom: 24 }}>
+              <span style={{
+                display: 'inline-block',
+                background: '#000',
+                color: '#fff',
+                fontWeight: 700,
+                borderRadius: 999,
+                padding: '6px 20px',
+                fontSize: 20,
+                boxShadow: '0 2px 8px #2563EB22',
+              }}>2</span>
+            </div>
+            <div style={{ marginBottom: 24, width: '100%', display: 'flex', justifyContent: 'center' }}>
+              <img
+                src={require('../assets/mobilescreens/set-budget.jpg')}
+                alt={steps[1].title}
+                style={{ width: '100%', maxWidth: 320, height: 'auto', borderRadius: 16, boxShadow: '0 2px 12px #0001' }}
+              />
+            </div>
+            <h3 style={{ fontSize: 22, fontWeight: 900, color: '#1a202c', marginBottom: 10, fontFamily: 'Inter, sans-serif', lineHeight: 1.2 }}>{steps[1].title}</h3>
+            <div style={{ fontSize: 18, fontWeight: 700, color: '#f9b233', marginBottom: 8, fontFamily: 'Inter, sans-serif' }}>{steps[1].highlight}</div>
+            <p style={{ fontSize: 15, color: '#374151', marginBottom: 16, maxWidth: 320, marginLeft: 'auto', marginRight: 'auto', fontFamily: 'Inter, sans-serif' }}>{steps[1].description}</p>
+          </div>
+          {/* Step 3 */}
+          <div
+            style={{
+              flex: '1 1 300px',
+              minWidth: 260,
+              maxWidth: 370,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              padding: '0 8px',
+              background: 'none',
+            }}
+          >
+            <div style={{ marginBottom: 24 }}>
+              <span style={{
+                display: 'inline-block',
+                background: '#000',
+                color: '#fff',
+                fontWeight: 700,
+                borderRadius: 999,
+                padding: '6px 20px',
+                fontSize: 20,
+                boxShadow: '0 2px 8px #2563EB22',
+              }}>3</span>
+            </div>
+            <div style={{ marginBottom: 24, width: '100%', display: 'flex', justifyContent: 'center' }}>
+              <img
+                src={require('../assets/mobilescreens/approve-task.jpg')}
+                alt={steps[2].title}
+                style={{ width: '100%', maxWidth: 320, height: 'auto', borderRadius: 16, boxShadow: '0 2px 12px #0001' }}
+              />
+            </div>
+            <h3 style={{ fontSize: 22, fontWeight: 900, color: '#1a202c', marginBottom: 10, fontFamily: 'Inter, sans-serif', lineHeight: 1.2 }}>{steps[2].title}</h3>
+            <div style={{ fontSize: 18, fontWeight: 700, color: '#f9b233', marginBottom: 8, fontFamily: 'Inter, sans-serif' }}>{steps[2].highlight}</div>
+            <p style={{ fontSize: 15, color: '#374151', marginBottom: 16, maxWidth: 320, marginLeft: 'auto', marginRight: 'auto', fontFamily: 'Inter, sans-serif' }}>{steps[2].description}</p>
+          </div>
         </div>
         {/* Centered Post your task Button */}
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 48 }}>

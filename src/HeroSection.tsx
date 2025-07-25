@@ -28,14 +28,14 @@ const HeroSection = () => {
         <div
           style={{
             flex: 7,
-            paddingTop: 34,
+            paddingTop: 0,
             paddingBottom: 32,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'flex-start',
             textAlign: 'left',
-            paddingLeft: 48,
+            paddingLeft: 2,
           }}
         >
           <h1
@@ -140,7 +140,7 @@ const HeroSection = () => {
           >
             <div
               style={{
-                background: 'rgba(255,255,255,0.7)',
+                background: 'hsl(220 13% 18%)',
                 borderRadius: 32,
                 padding: 32,
                 boxShadow: '0 8px 32px #f9b23322, 0 2px 16px #0001',
@@ -161,7 +161,7 @@ const HeroSection = () => {
                   boxShadow: '0 2px 8px #0001',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <img
                       src={require('../assets/images/logo.png')}
@@ -169,7 +169,7 @@ const HeroSection = () => {
                       style={{ width: 32, height: 32, borderRadius: 8, background: '#f3f4f6', objectFit: 'cover' }}
                       onError={e => { e.currentTarget.src = '/logo.png'; }}
                     />
-                    <span style={{ fontWeight: 700, color: '#2563EB', fontSize: 20 }}>Extrahand</span>
+                    <span style={{ fontWeight: 700, color: '#000', fontSize: 20 }}>Extrahand</span>
                   </div>
                   <div
                     style={{

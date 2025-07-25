@@ -125,7 +125,7 @@ const GooglePlayButton = () => (
 
 const Footer = () => {
   return (
-    <footer style={{ background: '#1a237e', color: '#f9fafb', width: '100%', borderRadius: 18, margin: '0 8px', marginTop: 40 }}>
+    <footer style={{ background: 'rgb(13 27 42)', color: '#f9fafb', width: '100%', borderRadius: 18, margin: '0 8px', marginTop: 40 }}>
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 24px 24px 24px' }}>
         <div style={{
           display: 'grid',
@@ -170,7 +170,7 @@ const Footer = () => {
             <GooglePlayButton />
           </div>
         </div>
-        <div style={{ borderTop: '1px solid #2e3576', marginTop: 32, paddingTop: 24, textAlign: 'center', color: '#f9fafb99', fontSize: 15 }}>
+        <div style={{ borderTop: '1px solid rgb(102, 102, 102))', marginTop: 32, paddingTop: 24, textAlign: 'center', color: '#f9fafb99', fontSize: 15 }}>
           © {new Date().getFullYear()} Extrahand. All rights reserved.
         </div>
       </div>

@@ -1,15 +1,25 @@
 import React, { useRef } from 'react';
 
+const imgMarketing = require('../assets/mobilescreens/work.png');
+const imgPainting = require('../assets/mobilescreens/painting.png');
+const imgMovers = require('../assets/mobilescreens/moving.png');
+const imgCleaning = require('../assets/mobilescreens/cleaning.png');
+const imgFurniture = require('../assets/mobilescreens/furniture.png');
+const imgDeliveries = require('../assets/mobilescreens/delivery.png');
+const imgGardening = require('../assets/mobilescreens/garden.png');
+const imgHandyperson = require('../assets/mobilescreens/handy.png');
+const imgBusiness = require('../assets/mobilescreens/business.png');
+
 const taskTypes = [
-  { title: 'Marketing', description: 'Help with website', image: '/assets/mobilescreens/work.png' },
-  { title: 'Painting', description: 'Wall mount art and paintings', image: '/assets/mobilescreens/painting.png' },
-  { title: 'Movers', description: 'Packing, wrapping, moving', image: '/assets/mobilescreens/moving.png' },
-  { title: 'Cleaning', description: 'Clean, mop and tidy', image: '/assets/mobilescreens/cleaning.png' },
-  { title: 'Furniture', description: 'Flatpack assembly and disassembly', image: '/assets/mobilescreens/furniture.png' },
-  { title: 'Deliveries', description: 'Urgent deliveries and couriers', image: '/assets/mobilescreens/delivery.png' },
-  { title: 'Gardening', description: 'Mulching, weeding and tidying up', image: '/assets/mobilescreens/garden.png' },
-  { title: 'Handyperson', description: 'Help with home maintenance', image: '/assets/mobilescreens/handy.png' },
-  { title: 'Business', description: 'Help with accounting and tax', image: '/assets/mobilescreens/business.png' },
+  { title: 'Marketing', description: 'Help with website', image: imgMarketing },
+  { title: 'Painting', description: 'Wall mount art and paintings', image: imgPainting },
+  { title: 'Movers', description: 'Packing, wrapping, moving', image: imgMovers },
+  { title: 'Cleaning', description: 'Clean, mop and tidy', image: imgCleaning },
+  { title: 'Furniture', description: 'Flatpack assembly and disassembly', image: imgFurniture },
+  { title: 'Deliveries', description: 'Urgent deliveries and couriers', image: imgDeliveries },
+  { title: 'Gardening', description: 'Mulching, weeding and tidying up', image: imgGardening },
+  { title: 'Handyperson', description: 'Help with home maintenance', image: imgHandyperson },
+  { title: 'Business', description: 'Help with accounting and tax', image: imgBusiness },
 ];
 
 const ScrollingGrid = ({ height }) => {
@@ -32,7 +42,7 @@ const ScrollingGrid = ({ height }) => {
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gap: 36,
+          gap: '1rem',
         }}>
           {fullList.map((task, idx) => (
             <div
@@ -40,15 +50,15 @@ const ScrollingGrid = ({ height }) => {
               style={{
                 display: 'flex',
                 alignItems: 'flex-start',
-                gap: 14,
+                gap: 20,
                 background: '#fff',
                 borderRadius: 18,
                 padding: 18,
                 boxShadow: '0 4px 24px #0001',
                 minHeight: 104,
-                width: '100%',
+                width: '90%',
                 border: '1px solid #eaf1fb',
-                marginBottom: 8,
+                marginBottom: 2,
                 transition: 'box-shadow 0.2s',
               }}
             >
@@ -56,8 +66,8 @@ const ScrollingGrid = ({ height }) => {
                 src={task.image}
                 alt={task.title}
                 style={{
-                  width: 70,
-                  height: 70,
+                  width: 120,
+                  height: 120,
                   objectFit: 'cover',
                   background: '#f3f4f6',
                   borderRadius: 12,
@@ -96,7 +106,7 @@ const TargetUsersSection = () => {
     <section style={{ background: '#fdf8f3', padding: '0', minHeight: 600 }}>
       <div style={{
         maxWidth: 1400,
-        margin: '0 auto',
+        margin: '0 48px',
         padding: '0 24px',
         display: 'flex',
         flexDirection: 'row',

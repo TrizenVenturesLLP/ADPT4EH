@@ -34,22 +34,8 @@ const TrustSafetySection = () => {
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            background: 'rgba(34,197,94,0.10)',
-            color: '#22c55e',
-            padding: '8px 20px',
-            borderRadius: 999,
-            fontSize: 16,
-            fontWeight: 500,
-            marginBottom: 18,
-          }}>
-            <span style={{ fontSize: 20 }}>🛡️</span>
-            Trust & Safety First
-          </div>
-          <h2 style={{ fontSize: 44, fontWeight: 800, color: '#1a237e', margin: '18px 0 12px 0', fontFamily: 'Inter, sans-serif' }}>
+         
+          <h2 style={{ fontSize: 44, fontWeight: 800, color: '#000', margin: '18px 0 12px 0', fontFamily: 'Inter, sans-serif' }}>
             Your Security is Our <span style={{ color: '#f9b233' }}>Priority</span>
           </h2>
           <p style={{ fontSize: 20, color: '#374151cc', maxWidth: 700, margin: '0 auto', fontFamily: 'Inter, sans-serif' }}>
@@ -83,7 +69,7 @@ const TrustSafetySection = () => {
                   cursor: 'pointer',
                 }}
                 onMouseOver={e => {
-                  e.currentTarget.style.boxShadow = '0 8px 32px #2563EB33';
+                  e.currentTarget.style.boxShadow = '0 8px 32px #f9b23344';
                   e.currentTarget.style.transform = 'translateY(-4px) scale(1.03)';
                 }}
                 onMouseOut={e => {
@@ -150,7 +136,7 @@ const TrustSafetySection = () => {
         </div>
         {/* CTA */}
         <div style={{ textAlign: 'center', padding: '0 24px' }}>
-          <h3 style={{ fontSize: 26, fontWeight: 700, color: '#1a237e', marginBottom: 16, fontFamily: 'Inter, sans-serif' }}>
+          <h3 style={{ fontSize: 26, fontWeight: 700, color: '#000', marginBottom: 16, fontFamily: 'Inter, sans-serif' }}>
             Ready to Experience Secure Task Delegation?
           </h3>
           <p style={{ color: '#374151cc', marginBottom: 24, maxWidth: 500, marginLeft: 'auto', marginRight: 'auto', fontSize: 17, fontFamily: 'Inter, sans-serif' }}>
@@ -158,7 +144,7 @@ const TrustSafetySection = () => {
           </p>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 20, maxWidth: 500, margin: '0 auto' }}>
             <button style={{
-              background: 'linear-gradient(90deg, #f9b233 0%, #ffe7b2 100%)',
+              background: ' #f9b233',
               color: '#222',
               padding: '16px 36px',
               borderRadius: 10,
@@ -171,8 +157,8 @@ const TrustSafetySection = () => {
               transition: 'background 0.2s',
             }}>Start Your First Task</button>
             <button style={{
-              border: '2px solid #1a237e',
-              color: '#1a237e',
+              border: '2px solid #f9b233',
+              color: '#f9b233',
               padding: '16px 36px',
               borderRadius: 10,
               fontWeight: 600,
@@ -183,12 +169,12 @@ const TrustSafetySection = () => {
               transition: 'background 0.2s, color 0.2s',
             }}
               onMouseOver={e => {
-                e.currentTarget.style.background = '#1a237e';
-                e.currentTarget.style.color = '#fff';
+                e.currentTarget.style.background = '#f9b233';
+                e.currentTarget.style.color = '#000';
               }}
               onMouseOut={e => {
                 e.currentTarget.style.background = '#fff';
-                e.currentTarget.style.color = '#1a237e';
+                e.currentTarget.style.color = '#000';
               }}
             >Learn More</button>
           </div>

@@ -50,7 +50,7 @@ const BenefitsSection = () => {
     <section style={{ padding: '64px 0 80px 0', background: '#fff' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <h2 style={{ fontSize: 40, fontWeight: 700, color: '#1a237e', marginBottom: 16, fontFamily: 'Inter, sans-serif' }}>
+          <h2 style={{ fontSize: 40, fontWeight: 700, color: '#000', marginBottom: 16, fontFamily: 'Inter, sans-serif' }}>
             Why Choose <span style={{ color: '#f9b233' }}>Extrahand</span>?
           </h2>
           <p style={{ fontSize: 20, color: '#374151cc', maxWidth: 700, margin: '0 auto', fontFamily: 'Inter, sans-serif' }}>
@@ -75,7 +75,7 @@ const BenefitsSection = () => {
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 padding: 32,
-                minHeight: 220,
+                minHeight: 'auto',
                 border: '1px solid #e5e7eb',
                 transition: 'box-shadow 0.2s, transform 0.2s',
                 cursor: 'pointer',
@@ -94,7 +94,8 @@ const BenefitsSection = () => {
                   width: 56,
                   height: 56,
                   borderRadius: 16,
-                  background: feature.iconBg,
+                  color:"hsl(220 13% 91%)",
+                  background: 'hsl(220 13% 91%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

@@ -2,15 +2,36 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import SignUpScreen from './SignUpScreen';
 import LoginScreen from './LoginScreen';
+import OTPVerificationScreen from './OTPVerificationScreen';
+import LocationInputScreen from './LocationInputScreen';
 
 export default function LandingScreen() {
   const [route, setRoute] = useState('landing');
+  const [otpPhone, setOtpPhone] = useState('');
 
   if (route === 'signup') {
-    return <SignUpScreen navigation={{ goBack: () => setRoute('landing'), navigate: () => setRoute('landing') }} />;
+    return <SignUpScreen navigation={{ goBack: () => setRoute('landing'), navigate: (r, params) => {
+      if (r === 'OTPVerification' && params && params.phone) {
+        setOtpPhone(params.phone);
+        setRoute('otp');
+      } else if (r === 'LocationInput') {
+        setRoute('location');
+      } else {
+        setRoute('landing');
+      }
+    } }} />;
   }
   if (route === 'login') {
     return <LoginScreen navigation={{ goBack: () => setRoute('landing'), navigate: () => setRoute('landing') }} />;
+  }
+  if (route === 'otp') {
+    return <OTPVerificationScreen navigation={{ goBack: () => setRoute('landing'), navigate: (r) => {
+      if (r === 'LocationInput') setRoute('location');
+      else setRoute('landing');
+    } }} phone={otpPhone} />;
+  }
+  if (route === 'location') {
+    return <LocationInputScreen navigation={{ goBack: () => setRoute('landing') }} />;
   }
 
   return (

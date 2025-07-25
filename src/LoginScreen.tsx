@@ -33,58 +33,60 @@ const LoginScreen = ({ navigation }: any) => {
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Text style={{ fontSize: 22, color: DARK }}>{Platform.OS === 'web' ? '←' : '‹'}</Text>
       </TouchableOpacity>
-      <Text style={styles.heading}>Sign In</Text>
-      <Text style={styles.subtext}>Login to your account</Text>
-      <Text style={styles.label}>Email</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="johndoe@gmail.com"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        editable={true}
-      />
-      <Text style={styles.label}>Password</Text>
-      <View style={styles.passwordContainer}>
+      <View style={styles.card}>
+        <Text style={styles.heading}>Sign In</Text>
+        <Text style={styles.subtext}>Login to your account</Text>
+        <Text style={styles.label}>Email</Text>
         <TextInput
-          style={[styles.input, { flex: 1, marginBottom: 0 }]}
-          placeholder="************"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry={!showPassword}
+          style={styles.input}
+          placeholder="johndoe@gmail.com"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
           editable={true}
         />
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-          <Text style={{ fontSize: 18, color: GRAY }}>{showPassword ? '🙈' : '👁️'}</Text>
+        <Text style={styles.label}>Password</Text>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={[styles.input, { flex: 1, marginBottom: 0 }]}
+            placeholder="************"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+            editable={true}
+          />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+            <Text style={{ fontSize: 18, color: GRAY }}>{showPassword ? '🙈' : '👁️'}</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.forgotContainer} onPress={() => {}}>
+          <Text style={styles.forgotText}>Forgot Password?</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin} disabled={loading}>
+          <Text style={styles.loginButtonText}>{loading ? 'Logging in...' : 'Login'}</Text>
+        </TouchableOpacity>
+        <View style={styles.dividerContainer}>
+          <View style={styles.divider} />
+          <Text style={styles.dividerText}>Or sign up with</Text>
+          <View style={styles.divider} />
+        </View>
+        {/* Social Login Icons */}
+        <View style={styles.socialRow}>
+          <TouchableOpacity style={styles.socialIconButton}>
+            <Text style={{ fontSize: 24 }}></Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.socialIconButton}>
+            <Text style={{ fontSize: 24, color: '#EA4335' }}>G</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.socialIconButton}>
+            <Text style={{ fontSize: 24, color: '#1877F3' }}>f</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.footerText}>
+          Don't have an account ?{' '}
+          <Text style={styles.signupText} onPress={() => navigation.goBack()}>Sign Up</Text>
+        </Text>
       </View>
-      <TouchableOpacity style={styles.forgotContainer} onPress={() => {}}>
-        <Text style={styles.forgotText}>Forgot Password?</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.loginButton} onPress={handleLogin} disabled={loading}>
-        <Text style={styles.loginButtonText}>{loading ? 'Logging in...' : 'Login'}</Text>
-      </TouchableOpacity>
-      <View style={styles.dividerContainer}>
-        <View style={styles.divider} />
-        <Text style={styles.dividerText}>Or sign up with</Text>
-        <View style={styles.divider} />
-      </View>
-      {/* Social Login Icons */}
-      <View style={styles.socialRow}>
-        <TouchableOpacity style={styles.socialIconButton}>
-          <Text style={{ fontSize: 24 }}></Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.socialIconButton}>
-          <Text style={{ fontSize: 24, color: '#EA4335' }}>G</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.socialIconButton}>
-          <Text style={{ fontSize: 24, color: '#1877F3' }}>f</Text>
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.footerText}>
-        Don't have an account ?{' '}
-        <Text style={styles.signupText} onPress={() => navigation.goBack()}>Sign Up</Text>
-      </Text>
     </View>
   );
 };
@@ -97,13 +99,26 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center', // changed from 'flex-start' to 'center' for vertical centering
   },
   backButton: {
     position: 'absolute',
     top: 40,
     left: 16,
     zIndex: 10,
+  },
+  card: {
+    width: '100%',
+    maxWidth: 480,
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 32,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 4,
+    alignItems: 'center',
   },
   heading: {
     fontSize: 24,

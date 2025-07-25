@@ -30,9 +30,14 @@ const SignUpScreen = ({ navigation }: any) => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      Alert.alert('Success', 'Account created successfully!', [
-        { text: 'OK', onPress: () => navigation.goBack() }
-      ]);
+      // Navigate directly after sign up
+      if (navigation.navigate) {
+        navigation.navigate('OTPVerification', { phone });
+      } else if (typeof navigation === 'function') {
+        navigation('OTPVerification', { phone });
+      } else {
+        navigation.goBack && navigation.goBack();
+      }
     }, 1000);
   };
 
@@ -42,109 +47,111 @@ const SignUpScreen = ({ navigation }: any) => {
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Text style={{ fontSize: 22, color: DARK }}>{Platform.OS === 'web' ? '←' : '‹'}</Text>
       </TouchableOpacity>
-      <Text style={styles.heading}>Create Account</Text>
-      <Text style={styles.subtext}>Sign up to get started</Text>
-      <Text style={styles.label}>Name</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Ex. John Doe"
-        value={fullName}
-        onChangeText={setFullName}
-        editable={true}
-      />
-      <Text style={styles.label}>Email</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="johndoe@gmail.com"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        editable={true}
-      />
-      <Text style={styles.label}>Phone Number</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="8985******"
-        value={phone}
-        onChangeText={setPhone}
-        keyboardType="phone-pad"
-        editable={true}
-      />
-      <Text style={styles.label}>Password</Text>
-      <View style={styles.passwordContainer}>
+      <View style={styles.card}>
+        <Text style={styles.heading}>Create Account</Text>
+        <Text style={styles.subtext}>Sign up to get started</Text>
+        <Text style={styles.label}>Name</Text>
         <TextInput
-          style={[styles.input, { flex: 1, marginBottom: 0 }]}
-          placeholder="************"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry={!showPassword}
+          style={styles.input}
+          placeholder="Ex. John Doe"
+          value={fullName}
+          onChangeText={setFullName}
           editable={true}
         />
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-          <Text style={{ fontSize: 18, color: GRAY }}>{showPassword ? '🙈' : '👁️'}</Text>
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.label}>Confirm Password</Text>
-      <View style={styles.passwordContainer}>
+        <Text style={styles.label}>Email</Text>
         <TextInput
-          style={[styles.input, { flex: 1, marginBottom: 0 }]}
-          placeholder="************"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry={!showConfirmPassword}
+          style={styles.input}
+          placeholder="johndoe@gmail.com"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
           editable={true}
         />
-        <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)} style={styles.eyeIcon}>
-          <Text style={{ fontSize: 18, color: GRAY }}>{showConfirmPassword ? '🙈' : '👁️'}</Text>
+        <Text style={styles.label}>Phone Number</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="8985******"
+          value={phone}
+          onChangeText={setPhone}
+          keyboardType="phone-pad"
+          editable={true}
+        />
+        <Text style={styles.label}>Password</Text>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={[styles.input, { flex: 1, marginBottom: 0 }]}
+            placeholder="************"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+            editable={true}
+          />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+            <Text style={{ fontSize: 18, color: GRAY }}>{showPassword ? '🙈' : '👁️'}</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.label}>Confirm Password</Text>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={[styles.input, { flex: 1, marginBottom: 0 }]}
+            placeholder="************"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry={!showConfirmPassword}
+            editable={true}
+          />
+          <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)} style={styles.eyeIcon}>
+            <Text style={{ fontSize: 18, color: GRAY }}>{showConfirmPassword ? '🙈' : '👁️'}</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.checkboxContainer} onPress={() => setAgree(!agree)} activeOpacity={0.8}>
+          <Text style={{
+            fontSize: 18,
+            marginRight: 8,
+            color: agree ? PRIMARY_YELLOW : GRAY,
+            borderWidth: 1,
+            borderColor: agree ? PRIMARY_YELLOW : GRAY,
+            borderRadius: 4,
+            width: 22,
+            height: 22,
+            textAlign: 'center',
+            lineHeight: 22,
+            backgroundColor: agree ? PRIMARY_YELLOW + '22' : 'transparent',
+          }}>{agree ? '✓' : ''}</Text>
+          <Text style={styles.checkboxLabel}>
+            Agree with <Text style={styles.termsText}>Terms & Conditions</Text>
+          </Text>
         </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.checkboxContainer} onPress={() => setAgree(!agree)} activeOpacity={0.8}>
-        <Text style={{
-          fontSize: 18,
-          marginRight: 8,
-          color: agree ? PRIMARY_YELLOW : GRAY,
-          borderWidth: 1,
-          borderColor: agree ? PRIMARY_YELLOW : GRAY,
-          borderRadius: 4,
-          width: 22,
-          height: 22,
-          textAlign: 'center',
-          lineHeight: 22,
-          backgroundColor: agree ? PRIMARY_YELLOW + '22' : 'transparent',
-        }}>{agree ? '✓' : ''}</Text>
-        <Text style={styles.checkboxLabel}>
-          Agree with <Text style={styles.termsText}>Terms & Conditions</Text>
+        <TouchableOpacity
+          style={[styles.signupButton, { backgroundColor: PRIMARY_YELLOW }]}
+          disabled={!agree || loading}
+          onPress={agree ? handleSignUp : undefined}
+          activeOpacity={agree ? 0.7 : 1}
+        >
+          <Text style={styles.signupButtonText}>{loading ? 'Signing Up...' : 'Sign Up'}</Text>
+        </TouchableOpacity>
+        <View style={styles.dividerContainer}>
+          <View style={styles.divider} />
+          <Text style={styles.dividerText}>Or sign up with</Text>
+          <View style={styles.divider} />
+        </View>
+        {/* Social Signup Buttons */}
+        <View style={styles.socialRow}>
+          <TouchableOpacity style={styles.socialIconButton}>
+            <Text style={{ fontSize: 24 }}></Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.socialIconButton}>
+            <Text style={{ fontSize: 24, color: '#EA4335' }}>G</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.socialIconButton}>
+            <Text style={{ fontSize: 24, color: '#1877F3' }}>f</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.footerText}>
+          Already have an account?{' '}
+          <Text style={styles.loginText} onPress={() => navigation.goBack()}>Sign In</Text>
         </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.signupButton, { backgroundColor: PRIMARY_YELLOW }]}
-        disabled={!agree || loading}
-        onPress={agree ? handleSignUp : undefined}
-        activeOpacity={agree ? 0.7 : 1}
-      >
-        <Text style={styles.signupButtonText}>{loading ? 'Signing Up...' : 'Sign Up'}</Text>
-      </TouchableOpacity>
-      <View style={styles.dividerContainer}>
-        <View style={styles.divider} />
-        <Text style={styles.dividerText}>Or sign up with</Text>
-        <View style={styles.divider} />
       </View>
-      {/* Social Signup Buttons */}
-      <View style={styles.socialRow}>
-        <TouchableOpacity style={styles.socialIconButton}>
-          <Text style={{ fontSize: 24 }}></Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.socialIconButton}>
-          <Text style={{ fontSize: 24, color: '#EA4335' }}>G</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.socialIconButton}>
-          <Text style={{ fontSize: 24, color: '#1877F3' }}>f</Text>
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.footerText}>
-        Already have an account?{' '}
-        <Text style={styles.loginText} onPress={() => navigation.goBack()}>Sign In</Text>
-      </Text>
     </View>
   );
 };
@@ -157,7 +164,20 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center', // changed from 'flex-start' to 'center' for vertical centering
+  },
+  card: {
+    width: '100%',
+    maxWidth: 480,
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 32,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 4,
+    alignItems: 'center',
   },
   backButton: {
     position: 'absolute',
