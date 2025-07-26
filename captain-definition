@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 2,
+  "dockerfilePath": "./Dockerfile",
+  "buildArguments": {},
+  "expose": {
+    "web": {
+      "containerPort": 80,
+      "httpPort": 80,
+      "httpsPort": 443
+    }
+  },
+  "healthcheck": {
+    "path": "/health",
+    "port": 80,
+    "interval": 30,
+    "timeout": 10,
+    "retries": 3
+  },
+  "notify": {
+    "webhook": "",
+    "slack": "",
+    "discord": ""
+  },
+  "customDomain": "",
+  "forceSsl": true,
+  "appName": "extrahand",
+  "hasPersistentData": false,
+  "description": "Extrahand React Native Web App",
+  "instanceCount": 1,
+  "tags": ["react-native", "web", "extrahand"]
+} 

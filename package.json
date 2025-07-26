@@ -10,6 +10,8 @@
     "ios": "react-native run-ios",
     "web": "webpack serve --config webpack.config.js --mode development",
     "build:web": "webpack --config webpack.config.js --mode production",
+    "build:docker": "docker build -t extrahand .",
+    "deploy:caprover": "npm run build:web && git add . && git commit -m 'Deploy to CapRover' && git push",
     "test": "jest",
     "lint": "eslint .",
     "prettier": "prettier --write ."
