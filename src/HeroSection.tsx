@@ -67,7 +67,7 @@ const HeroSection = () => {
               fontFamily: 'Inter, sans-serif',
             }}
           >
-            Post any task, anywhere. Trusted locals will handle it for you.
+            Post any task, anywhere.{'\n'}Trusted locals will handle it for you.
           </p>
           <div className="hero-buttons" style={{ 
             display: 'flex', 
@@ -271,6 +271,10 @@ const HeroSection = () => {
               text-align: center !important;
               align-items: center !important;
               padding-left: 0 !important;
+              width: 100% !important;
+              display: flex !important;
+              justify-content: center !important;
+              align-items: center !important;
             }
             .hero-title {
               font-size: 40px !important;
@@ -278,11 +282,15 @@ const HeroSection = () => {
             .hero-description {
               font-size: 18px !important;
               max-width: 100% !important;
+              white-space: pre-line !important;
+              text-align: center !important;
             }
             .hero-buttons {
               flex-direction: column !important;
               width: 100% !important;
               max-width: 300px !important;
+              // align-items: center !important;
+              // justify-content: center !important;
             }
             .hero-button {
               font-size: 18px !important;
