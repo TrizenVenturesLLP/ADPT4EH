@@ -12,6 +12,7 @@ const HeroSection = () => {
       }}
     >
       <div
+        className="hero-container"
         style={{
           width: '100%',
           maxWidth: 1200,
@@ -26,6 +27,7 @@ const HeroSection = () => {
       >
         {/* Text */}
         <div
+          className="hero-text"
           style={{
             flex: 7,
             paddingTop: 0,
@@ -39,6 +41,7 @@ const HeroSection = () => {
           }}
         >
           <h1
+            className="hero-title"
             style={{
               fontSize: 56,
               fontWeight: 900,
@@ -53,6 +56,7 @@ const HeroSection = () => {
             <span style={{ color: '#f9b233', display: 'block' }}>wherever you are</span>
           </h1>
           <p
+            className="hero-description"
             style={{
               fontSize: 22,
               color: '#6B7280',
@@ -65,8 +69,14 @@ const HeroSection = () => {
           >
             Post any task, anywhere. Trusted locals will handle it for you.
           </p>
-          <div style={{ display: 'flex', flexDirection: 'row', gap: 16, marginBottom: 16 }}>
+          <div className="hero-buttons" style={{ 
+            display: 'flex', 
+            flexDirection: 'row', 
+            gap: 16, 
+            marginBottom: 16,
+          }}>
             <button
+              className="hero-button primary"
               style={{
                 background: '#f9b233',
                 color: '#222',
@@ -89,6 +99,7 @@ const HeroSection = () => {
               <span style={{ marginLeft: 12, fontSize: 22, color: '#222' }}>→</span>
             </button>
             <button
+              className="hero-button secondary"
               style={{
                 background: '#fff',
                 color: '#f9b233',
@@ -119,6 +130,7 @@ const HeroSection = () => {
         </div>
         {/* Image/Mockup */}
         <div
+          className="hero-mockup"
           style={{
             flex: 5,
             display: 'flex',
@@ -130,6 +142,7 @@ const HeroSection = () => {
           }}
         >
           <div
+            className="mockup-container"
             style={{
               position: 'relative',
               width: '100%',
@@ -139,6 +152,7 @@ const HeroSection = () => {
             }}
           >
             <div
+              className="mockup-device"
               style={{
                 background: 'hsl(220 13% 18%)',
                 borderRadius: 32,
@@ -151,6 +165,7 @@ const HeroSection = () => {
               }}
             >
               <div
+                className="mockup-screen"
                 style={{
                   background: '#fff',
                   borderRadius: 20,
@@ -169,17 +184,13 @@ const HeroSection = () => {
                       style={{ width: 32, height: 32, borderRadius: 8, background: '#f3f4f6', objectFit: 'cover' }}
                       onError={e => { e.currentTarget.src = '/logo.png'; }}
                     />
-                    <span style={{ fontWeight: 700, color: '#000', fontSize: 20 }}>Extrahand</span>
+                    <span className="mockup-app-name" style={{ 
+                      fontWeight: 700, 
+                      color: '#000', 
+                      fontSize: 20,
+                    }}>Extrahand</span>
                   </div>
-                  <div
-                    style={{
-                      width: 12,
-                      height: 12,
-                      background: '#10B981',
-                      borderRadius: 6,
-                      animation: 'bounce 1.5s infinite alternate',
-                    }}
-                  ></div>
+
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                   <div style={{ background: '#f3f4f6', borderRadius: 10, padding: 12 }}>
@@ -199,6 +210,7 @@ const HeroSection = () => {
             </div>
             {/* Floating elements */}
             <div
+              className="floating-element blue"
               style={{
                 position: 'absolute',
                 top: -24,
@@ -208,11 +220,13 @@ const HeroSection = () => {
                 padding: 16,
                 boxShadow: '0 4px 16px #2563EB33',
                 animation: 'bounce 1.5s infinite alternate',
+                zIndex: 10,
               }}
             >
               <span style={{ fontSize: 22, color: '#fff' }}>→</span>
             </div>
             <div
+              className="floating-element green"
               style={{
                 position: 'absolute',
                 bottom: -24,
@@ -223,10 +237,12 @@ const HeroSection = () => {
                 boxShadow: '0 4px 16px #10B98133',
                 animation: 'bounce 1.5s infinite alternate',
                 animationDelay: '1s',
+                zIndex: 10,
               }}
             >
               <span style={{ fontSize: 22, color: '#fff' }}>▶</span>
             </div>
+
           </div>
         </div>
       </div>
@@ -240,6 +256,83 @@ const HeroSection = () => {
           @keyframes slideUp {
             0% { opacity: 0; transform: translateY(40px);}
             100% { opacity: 1; transform: translateY(0);}
+          }
+          
+          @media (max-width: 768px) {
+            .hero-container {
+              flex-direction: column !important;
+              gap: 32px !important;
+              padding: 0 16px !important;
+            }
+            .hero-text {
+              flex: none !important;
+              text-align: center !important;
+              align-items: center !important;
+              padding-left: 0 !important;
+            }
+            .hero-title {
+              font-size: 40px !important;
+            }
+            .hero-description {
+              font-size: 18px !important;
+              max-width: 100% !important;
+            }
+            .hero-buttons {
+              flex-direction: column !important;
+              width: 100% !important;
+              max-width: 300px !important;
+            }
+            .hero-button {
+              font-size: 18px !important;
+              padding: 14px 28px !important;
+              justify-content: center !important;
+            }
+            .hero-mockup {
+              flex: none !important;
+              margin-right: 0 !important;
+              min-height: 250px !important;
+            }
+            .mockup-container {
+              max-width: 300px !important;
+              min-height: 250px !important;
+            }
+            .mockup-device {
+              padding: 24px !important;
+              border-radius: 24px !important;
+            }
+            .mockup-screen {
+              padding: 16px !important;
+              border-radius: 16px !important;
+              gap: 12px !important;
+            }
+                         .floating-element {
+               display: none !important;
+             }
+          }
+          
+          @media (max-width: 480px) {
+            .hero-title {
+              font-size: 32px !important;
+            }
+            .hero-description {
+              font-size: 16px !important;
+            }
+            .hero-button {
+              font-size: 16px !important;
+              padding: 12px 24px !important;
+            }
+            .mockup-device {
+              padding: 16px !important;
+              border-radius: 20px !important;
+            }
+            .mockup-screen {
+              padding: 12px !important;
+              border-radius: 12px !important;
+              gap: 8px !important;
+            }
+            .mockup-app-name {
+              font-size: 16px !important;
+            }
           }
         `}
       </style>

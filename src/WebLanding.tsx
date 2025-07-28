@@ -27,7 +27,9 @@ const categories = [
 const Header = ({ onNavigate }) => {
   const [activeItem, setActiveItem] = useState(null);
   const [showCategories, setShowCategories] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!showCategories) return;
@@ -40,33 +42,69 @@ const Header = ({ onNavigate }) => {
     return () => document.removeEventListener("mousedown", handleClick);
   }, [showCategories]);
 
+  useEffect(() => {
+    function handleClick(e) {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
+        setShowMobileMenu(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [showMobileMenu]);
+
   const handleNavigate = (item) => {
     setActiveItem(item.label);
     if (onNavigate) onNavigate(item.route);
-    setShowCategories(false); // close dropdown on any menu click
+    setShowCategories(false);
+    setShowMobileMenu(false);
   };
 
-  const centerMenu = menuItems.slice(0, 4); // Post a Task, Browse Tasks, How it works, Benefits
-  const rightMenu = menuItems.slice(4);     // Login, Signup, Become a Tasker
+  const centerMenu = menuItems.slice(0, 4);
+  const rightMenu = menuItems.slice(4);
 
   return (
-    <div style={{
+    <div className="header-container" style={{
       width: '100%',
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: 16,
+      padding: '16px',
       borderBottom: '1px solid #e5e7eb',
-      background: '#fff'
+      background: '#fff',
+      position: 'relative',
+      zIndex: 1000,
     }}>
       {/* Left: Logo */}
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         <img src={require('../assets/images/logo.png')} alt="Extrahand Logo" style={{ height: 32, width: 32, marginRight: 8 }} />
         <span style={{ fontSize: 24, fontWeight: 700, color: '#1f2937', fontFamily: 'Inter, sans-serif' }}>Extrahand</span>
       </div>
-      {/* Center: Main menu */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: 24, alignItems: 'center', height: 48 }}>
+
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setShowMobileMenu(!showMobileMenu)}
+        className="mobile-menu-button"
+        style={{
+          display: 'none',
+          background: 'transparent',
+          border: 'none',
+          fontSize: 24,
+          cursor: 'pointer',
+          padding: 8,
+        }}
+      >
+        ☰
+      </button>
+
+      {/* Desktop Menu */}
+      <div className="desktop-menu" style={{
+        display: 'flex',
+        justifyContent: 'center',
+        gap: 24,
+        alignItems: 'center',
+        height: 48,
+      }}>
         {centerMenu.map((item, index) =>
           item.label === "Browse Tasks" ? (
             <div key={index} style={{ position: "relative", display: 'flex', alignItems: 'center', height: 40 }} ref={dropdownRef}>
@@ -94,7 +132,7 @@ const Header = ({ onNavigate }) => {
                 <span style={{ marginLeft: 4, fontSize: 14, color: '#888' }}>▼</span>
               </button>
               {showCategories && (
-                <div style={{
+                <div className="categories-dropdown" style={{
                   position: "absolute",
                   top: "100%",
                   left: "50%",
@@ -178,8 +216,12 @@ const Header = ({ onNavigate }) => {
           )
         )}
       </div>
-      {/* Right: Auth menu */}
-      <div style={{ display: 'flex', gap: 24 }}>
+
+      {/* Desktop Right Menu */}
+      <div className="desktop-right-menu" style={{
+        display: 'flex',
+        gap: 24,
+      }}>
         {rightMenu.map((item, index) => (
           <button
             key={index}
@@ -218,6 +260,57 @@ const Header = ({ onNavigate }) => {
           </button>
         ))}
       </div>
+
+      {/* Mobile Menu */}
+      {showMobileMenu && (
+        <div
+          ref={mobileMenuRef}
+          className="mobile-menu"
+          style={{
+            position: 'absolute',
+            top: '100%',
+            left: 0,
+            right: 0,
+            background: '#fff',
+            borderTop: '1px solid #e5e7eb',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
+            zIndex: 1000,
+            padding: '16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+          }}
+        >
+          {menuItems.map((item, index) => (
+            <button
+              key={index}
+              onClick={() => handleNavigate(item)}
+              style={{
+                background: item.type === 'button' ? '#f9b233' : 'transparent',
+                color: item.type === 'button' ? '#222' : '#666',
+                fontWeight: 500,
+                fontSize: 16,
+                border: 'none',
+                borderRadius: item.type === 'button' ? 8 : 0,
+                padding: item.type === 'button' ? '12px 20px' : '12px 0',
+                cursor: 'pointer',
+                fontFamily: 'Inter, sans-serif',
+                outline: 'none',
+                textAlign: 'left',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <span>{item.label}</span>
+              {item.icon && (
+                <span style={{ fontSize: 14, color: '#888' }}>▼</span>
+              )}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -252,7 +345,12 @@ const WebLanding = () => {
   }
 
   return (
-    <div style={{ fontFamily: 'Inter, sans-serif', background: '#fff', minHeight: '100vh' }}>
+    <div style={{ 
+      fontFamily: 'Inter, sans-serif', 
+      background: '#fff', 
+      minHeight: '100vh',
+      overflowX: 'hidden'
+    }}>
       <Header onNavigate={setRoute} />
       <HeroSection />
       <HowItWorksSection />
@@ -260,6 +358,41 @@ const WebLanding = () => {
       <TargetUsersSection />
       <TrustSafetySection />
       <Footer />
+      
+      {/* Responsive CSS */}
+      <style>
+        {`
+          @media (max-width: 768px) {
+            .mobile-menu-button {
+              display: block !important;
+            }
+            
+            .desktop-menu {
+              display: none !important;
+            }
+            
+            .desktop-right-menu {
+              display: none !important;
+            }
+            
+            .categories-dropdown {
+              min-width: 300px !important;
+              flex-direction: column !important;
+              gap: 16px !important;
+            }
+            
+            body {
+              font-size: 14px;
+            }
+          }
+          
+          @media (max-width: 480px) {
+            body {
+              font-size: 12px;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };

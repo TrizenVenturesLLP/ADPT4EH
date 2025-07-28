@@ -95,13 +95,25 @@ const socialIcons = [
 
 const AppStoreButton = () => (
   <a href="#" aria-label="Download on the App Store" style={{ display: 'inline-block' }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#fff', borderRadius: 16, padding: '12px 24px', boxShadow: '0 2px 8px #0002', minWidth: 180, minHeight: 56 }}>
-      <svg width="40" height="40" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div style={{ 
+      display: 'flex', 
+      alignItems: 'center', 
+      gap: 'clamp(8px, 2vw, 12px)', 
+      background: '#fff', 
+      borderRadius: 16, 
+      padding: 'clamp(10px, 2.5vw, 12px) clamp(16px, 4vw, 24px)', 
+      boxShadow: '0 2px 8px #0002', 
+      minWidth: 'clamp(140px, 25vw, 180px)', 
+      minHeight: 'clamp(48px, 8vw, 56px)',
+      width: '100%',
+      maxWidth: 200
+    }}>
+      <svg width="clamp(32px, 6vw, 40px)" height="clamp(32px, 6vw, 40px)" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M21.7 14.7c-.1-2.1 1.7-3.1 1.8-3.2-1-1.5-2.6-1.7-3.1-1.7-1.3-.1-2.5.8-3.1.8-.6 0-1.6-.8-2.7-.8-1.4.1-2.7.8-3.4 2-1.5 2.6-.4 6.4 1.1 8.5.7 1 1.5 2.1 2.6 2.1 1 0 1.3-.7 2.6-.7s1.6.7 2.7.7c1.1 0 1.8-1 2.5-2 .8-1.1 1.1-2.2 1.1-2.3 0-.1-2.1-.8-2.1-3.2zm-2-6c.6-.7 1-1.7.9-2.7-.9.1-2 .6-2.6 1.3-.6.6-1.1 1.6-.9 2.5 1 .1 2-.5 2.6-1.1z" fill="#111"/>
       </svg>
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        <span style={{ fontSize: 12, color: '#111', lineHeight: 1 }}>Download on the</span>
-        <span style={{ fontSize: 16, color: '#111', fontWeight: 600, lineHeight: 1 }}>App Store</span>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
+        <span style={{ fontSize: 'clamp(10px, 2vw, 12px)', color: '#111', lineHeight: 1 }}>Download on the</span>
+        <span style={{ fontSize: 'clamp(12px, 2.5vw, 16px)', color: '#111', fontWeight: 600, lineHeight: 1 }}>App Store</span>
       </div>
     </div>
   </a>
@@ -109,15 +121,27 @@ const AppStoreButton = () => (
 
 const GooglePlayButton = () => (
   <a href="#" aria-label="Get it on Google Play" style={{ display: 'inline-block' }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#fff', borderRadius: 16, padding: '12px 24px', boxShadow: '0 2px 8px #0002', minWidth: 180, minHeight: 56 }}>
-      <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div style={{ 
+      display: 'flex', 
+      alignItems: 'center', 
+      gap: 'clamp(8px, 2vw, 12px)', 
+      background: '#fff', 
+      borderRadius: 16, 
+      padding: 'clamp(10px, 2.5vw, 12px) clamp(16px, 4vw, 24px)', 
+      boxShadow: '0 2px 8px #0002', 
+      minWidth: 'clamp(140px, 25vw, 180px)', 
+      minHeight: 'clamp(48px, 8vw, 56px)',
+      width: '100%',
+      maxWidth: 200
+    }}>
+      <svg width="clamp(24px, 5vw, 28px)" height="clamp(24px, 5vw, 28px)" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
         <polygon points="3,2 33,18 3,34" fill="#34A853"/>
         <polygon points="3,2 19,18 3,34" fill="#FBBC05"/>
         <polygon points="19,18 33,18 3,34" fill="#EA4335"/>
       </svg>
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        <span style={{ fontSize: 12, color: '#111', lineHeight: 1 }}>Android App on</span>
-        <span style={{ fontSize: 16, color: '#111', fontWeight: 600, lineHeight: 1 }}>Google Play</span>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
+        <span style={{ fontSize: 'clamp(10px, 2vw, 12px)', color: '#111', lineHeight: 1 }}>Android App on</span>
+        <span style={{ fontSize: 'clamp(12px, 2.5vw, 16px)', color: '#111', fontWeight: 600, lineHeight: 1 }}>Google Play</span>
       </div>
     </div>
   </a>
@@ -125,23 +149,49 @@ const GooglePlayButton = () => (
 
 const Footer = () => {
   return (
-    <footer style={{ background: 'rgb(13 27 42)', color: '#f9fafb', width: '100%', borderRadius: 18, margin: '0 8px', marginTop: 40 }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 24px 24px 24px' }}>
+    <footer style={{ 
+      background: 'rgb(13 27 42)', 
+      color: '#f9fafb', 
+      width: '100%', 
+      borderRadius: 18, 
+      margin: '0 clamp(4px, 1vw, 8px)', 
+      marginTop: 'clamp(24px, 5vw, 40px)' 
+    }}>
+      <div style={{ 
+        maxWidth: 1200, 
+        margin: '0 auto', 
+        padding: 'clamp(32px, 6vw, 48px) clamp(16px, 4vw, 24px) clamp(16px, 3vw, 24px) clamp(16px, 4vw, 24px)' 
+      }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(5, 1fr)',
-          gap: 36,
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: 'clamp(24px, 4vw, 36px)',
           textAlign: 'left',
         }}>
           {footerColumns.map((col, idx) => (
             <div key={idx}>
-              <h3 style={{ fontWeight: 600, fontSize: 16, marginBottom: 18, color: '#f9fafbcc', letterSpacing: 1 }}>{col.title}</h3>
+              <h3 style={{ 
+                fontWeight: 600, 
+                fontSize: 'clamp(14px, 2.5vw, 16px)', 
+                marginBottom: 'clamp(12px, 2.5vw, 18px)', 
+                color: '#f9fafbcc', 
+                letterSpacing: 1 
+              }}>{col.title}</h3>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 {col.links.map((link, linkIdx) => (
                   <li key={linkIdx}>
                     <a
                       href={link.href}
-                      style={{ color: '#f9fafb99', textDecoration: 'none', fontSize: 14, fontWeight: 400, display: 'block', marginBottom: 8, transition: 'color 0.2s' }}
+                      style={{ 
+                        color: '#f9fafb99', 
+                        textDecoration: 'none', 
+                        fontSize: 'clamp(12px, 2.5vw, 14px)', 
+                        fontWeight: 400, 
+                        display: 'block', 
+                        marginBottom: 'clamp(6px, 1.5vw, 8px)', 
+                        transition: 'color 0.2s',
+                        lineHeight: 1.4
+                      }}
                       onMouseOver={e => (e.currentTarget.style.color = '#fff')}
                       onMouseOut={e => (e.currentTarget.style.color = '#f9fafb99')}
                     >
@@ -153,24 +203,76 @@ const Footer = () => {
             </div>
           ))}
         </div>
-        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', marginTop: 48, gap: 32 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-            <span style={{ color: '#fff', fontSize: 16 }}>Follow us:</span>
-            {socialIcons.map((icon, idx) => (
-              <a key={idx} href={icon.href} aria-label={icon.label} style={{ width: 40, height: 40, background: '#fff', borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'opacity 0.2s' }}
-                onMouseOver={e => (e.currentTarget.style.opacity = '0.8')}
-                onMouseOut={e => (e.currentTarget.style.opacity = '1')}
-              >
-                {icon.icon}
-              </a>
-            ))}
+        
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 'clamp(24px, 4vw, 32px)', 
+          marginTop: 'clamp(32px, 6vw, 48px)'
+        }}>
+          {/* Social Media Section */}
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'column',
+            alignItems: 'center', 
+            gap: 'clamp(12px, 2.5vw, 18px)',
+            width: '100%'
+          }}>
+            <span style={{ 
+              color: '#fff', 
+              fontSize: 'clamp(14px, 2.5vw, 16px)',
+              fontWeight: 500
+            }}>Follow us:</span>
+            <div style={{ 
+              display: 'flex', 
+              gap: 'clamp(12px, 2vw, 18px)',
+              justifyContent: 'center',
+              flexWrap: 'wrap'
+            }}>
+              {socialIcons.map((icon, idx) => (
+                <a key={idx} href={icon.href} aria-label={icon.label} style={{ 
+                  width: 'clamp(36px, 6vw, 40px)', 
+                  height: 'clamp(36px, 6vw, 40px)', 
+                  background: '#fff', 
+                  borderRadius: '50%', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  transition: 'opacity 0.2s',
+                  flexShrink: 0
+                }}
+                  onMouseOver={e => (e.currentTarget.style.opacity = '0.8')}
+                  onMouseOut={e => (e.currentTarget.style.opacity = '1')}
+                >
+                  {icon.icon}
+                </a>
+              ))}
+            </div>
           </div>
-          <div style={{ display: 'flex', gap: 16 }}>
+          
+          {/* App Download Buttons */}
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'column',
+            gap: 'clamp(12px, 2.5vw, 16px)',
+            width: '100%',
+            maxWidth: 400
+          }}>
             <AppStoreButton />
             <GooglePlayButton />
           </div>
         </div>
-        <div style={{ borderTop: '1px solid rgb(102, 102, 102))', marginTop: 32, paddingTop: 24, textAlign: 'center', color: '#f9fafb99', fontSize: 15 }}>
+        
+        <div style={{ 
+          borderTop: '1px solid rgb(102, 102, 102)', 
+          marginTop: 'clamp(24px, 4vw, 32px)', 
+          paddingTop: 'clamp(16px, 3vw, 24px)', 
+          textAlign: 'center', 
+          color: '#f9fafb99', 
+          fontSize: 'clamp(13px, 2.5vw, 15px)',
+          lineHeight: 1.4
+        }}>
           © {new Date().getFullYear()} Extrahand. All rights reserved.
         </div>
       </div>
