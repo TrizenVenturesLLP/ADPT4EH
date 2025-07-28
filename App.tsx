@@ -1,13 +1,14 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import LandingScreen from './src/LandingScreen';
-import WebLanding from './src/WebLanding';
+import { NavigationProvider } from './src/SimpleNavigation';
+import SimpleNavigation from './src/SimpleNavigation';
 
 const App = () => {
-  if (Platform.OS === 'web') {
-    return <WebLanding />;
-  }
-  return <LandingScreen />;
+  return (
+    <NavigationProvider>
+      <SimpleNavigation />
+    </NavigationProvider>
+  );
 };
 
 export default App; 

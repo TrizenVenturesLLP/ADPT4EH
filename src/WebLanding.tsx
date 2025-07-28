@@ -1,14 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigation } from './SimpleNavigation';
 import HeroSection from './HeroSection';
 import HowItWorksSection from './HowItWorksSection';
 import BenefitsSection from './BenefitsSection';
 import TargetUsersSection from './TargetUsersSection';
 import TrustSafetySection from './TrustSafetySection';
 import Footer from './Footer';
-import SignUpScreen from './SignUpScreen';
-import LoginScreen from './LoginScreen';
-import OTPVerificationScreen from './OTPVerificationScreen';
-import LocationInputScreen from './LocationInputScreen';
+
 
 const menuItems = [
   { label: 'Post a Task', type: 'button', route: 'PostTask' },
@@ -16,7 +14,7 @@ const menuItems = [
   { label: 'How it works' },
   { label: 'Benefits' },
   { label: 'Login', route: 'Login' },
-  { label: 'Signup', route: 'Signup' },
+  { label: 'Signup', route: 'SignUp' },
   { label: 'Become a Tasker', type: 'button', route: 'BecomeTasker' },
 ];
 
@@ -326,33 +324,11 @@ const Header = ({ onNavigate }) => {
 };
 
 const WebLanding = () => {
-  const [route, setRoute] = useState('landing');
-  const [otpPhone, setOtpPhone] = useState('');
+  const navigation = useNavigation();
 
-  if (route === 'Signup') {
-    return <SignUpScreen navigation={{ goBack: () => setRoute('landing'), navigate: (r, params) => {
-      if (r === 'OTPVerification' && params && params.phone) {
-        setOtpPhone(params.phone);
-        setRoute('OTPVerification');
-      } else if (r === 'LocationInput') {
-        setRoute('LocationInput');
-      } else {
-        setRoute('landing');
-      }
-    } }} />;
-  }
-  if (route === 'Login') {
-    return <LoginScreen navigation={{ goBack: () => setRoute('landing'), navigate: () => setRoute('landing') }} />;
-  }
-  if (route === 'OTPVerification') {
-    return <OTPVerificationScreen navigation={{ goBack: () => setRoute('landing'), navigate: (r) => {
-      if (r === 'LocationInput') setRoute('LocationInput');
-      else setRoute('landing');
-    } }} phone={otpPhone} />;
-  }
-  if (route === 'LocationInput') {
-    return <LocationInputScreen navigation={{ goBack: () => setRoute('landing') }} />;
-  }
+  const handleNavigate = (route) => {
+    navigation.navigate(route);
+  };
 
   return (
     <div style={{ 
@@ -361,7 +337,7 @@ const WebLanding = () => {
       minHeight: '100vh',
       overflowX: 'hidden'
     }}>
-      <Header onNavigate={setRoute} />
+      <Header onNavigate={handleNavigate} />
       <HeroSection />
       <HowItWorksSection />
       <BenefitsSection />

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform } from 'react-native';
+import { useNavigation } from './SimpleNavigation';
 
 const PRIMARY_YELLOW = '#f9b233';
 const DARK = '#222';
@@ -11,7 +12,9 @@ const maskPhone = (phone: string) => {
   return phone.replace(/(\d{2})(\d{2})(\d{4})(\d{2})/, '+$1 $2******$4');
 };
 
-const OTPVerificationScreen = ({ navigation, phone = '' }: any) => {
+const OTPVerificationScreen: React.FC = () => {
+  const navigation = useNavigation();
+  const phone = navigation.params?.phone || '';
   const [otp, setOtp] = useState(['', '', '', '']);
   const [timer, setTimer] = useState(30);
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
@@ -42,13 +45,16 @@ const OTPVerificationScreen = ({ navigation, phone = '' }: any) => {
   const handleContinue = () => {
     // Add OTP verification logic here
     if (otp.join('').length === 4) {
-      if (navigation.navigate) {
-        navigation.navigate('LocationInput');
-      } else if (typeof navigation === 'function') {
-        navigation('LocationInput');
-      } else {
-        navigation.goBack && navigation.goBack();
-      }
+      console.log('=== OTP VERIFICATION DEBUG ===');
+      console.log('OTP entered:', otp.join(''));
+      console.log('Navigation object:', navigation);
+      console.log('Platform:', Platform.OS);
+      
+      // Simplified navigation for Android
+      console.log('Calling navigation.navigate("ChooseLocationMethod")');
+      navigation.navigate('ChooseLocationMethod');
+    } else {
+      console.log('OTP not complete, length:', otp.join('').length);
     }
   };
 
@@ -56,7 +62,7 @@ const OTPVerificationScreen = ({ navigation, phone = '' }: any) => {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
         <View style={styles.container}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation && navigation.goBack && navigation.goBack()}>
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
             <Text style={{ fontSize: 18, color: DARK }}>{'←'} Back</Text>
           </TouchableOpacity>
           <View style={styles.card}>
@@ -87,6 +93,32 @@ const OTPVerificationScreen = ({ navigation, phone = '' }: any) => {
             <TouchableOpacity style={styles.continueButton} onPress={handleContinue} disabled={otp.join('').length !== 4}>
               <Text style={styles.continueButtonText}>Continue</Text>
             </TouchableOpacity>
+            
+            {/* Test button for debugging */}
+            <TouchableOpacity 
+              style={[styles.continueButton, { marginTop: 10, backgroundColor: '#ff4444' }]} 
+              onPress={() => {
+                console.log('=== TEST BUTTON PRESSED ===');
+                console.log('Navigation object:', navigation);
+                console.log('Navigation type:', typeof navigation);
+                console.log('Navigation keys:', navigation ? Object.keys(navigation) : 'null');
+                
+                if (navigation && navigation.navigate) {
+                  console.log('Test: Calling navigation.navigate("ChooseLocationMethod")');
+                  try {
+                    navigation.navigate('ChooseLocationMethod');
+                    console.log('Test: Navigation call completed');
+                  } catch (error) {
+                    console.error('Test: Navigation call failed:', error);
+                  }
+                } else {
+                  console.log('Test: Navigation object is invalid');
+
+                }
+              }}
+            >
+              <Text style={styles.continueButtonText}>TEST NAVIGATION</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </div>
@@ -94,7 +126,7 @@ const OTPVerificationScreen = ({ navigation, phone = '' }: any) => {
   }
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation && navigation.goBack && navigation.goBack()}>
+                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Text style={{ fontSize: 18, color: DARK }}>{Platform.OS === 'web' ? '←' : '‹'} Back</Text>
       </TouchableOpacity>
       <View style={styles.card}>
@@ -125,6 +157,27 @@ const OTPVerificationScreen = ({ navigation, phone = '' }: any) => {
         <TouchableOpacity style={styles.continueButton} onPress={handleContinue} disabled={otp.join('').length !== 4}>
           <Text style={styles.continueButtonText}>Continue</Text>
         </TouchableOpacity>
+        
+        {/* Test button for debugging */}
+        <TouchableOpacity 
+          style={[styles.continueButton, { marginTop: 10, backgroundColor: '#ff4444' }]} 
+          onPress={() => {
+            console.log('=== TEST BUTTON PRESSED (MOBILE) ===');
+            console.log('Navigation object:', navigation);
+            console.log('Navigation type:', typeof navigation);
+            console.log('Navigation keys:', navigation ? Object.keys(navigation) : 'null');
+            
+            console.log('Test: Calling navigation.navigate("ChooseLocationMethod")');
+            try {
+              navigation.navigate('ChooseLocationMethod');
+              console.log('Test: Navigation call completed');
+            } catch (error) {
+              console.error('Test: Navigation call failed:', error);
+            }
+          }}
+        >
+          <Text style={styles.continueButtonText}>TEST NAVIGATION</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -142,11 +195,19 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: 40,
-    left: 16,
+    top: 20,
+    left: 20,
     zIndex: 10,
     flexDirection: 'row',
     alignItems: 'center',
+    padding: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
   card: {
     width: '100%',

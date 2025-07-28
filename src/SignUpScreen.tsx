@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform } from 'react-native';
+import { useNavigation } from './SimpleNavigation';
 
 const PRIMARY_YELLOW = '#f9b233';
 const PRIMARY_BLUE = '#2563EB';
@@ -7,7 +8,8 @@ const DARK = '#222';
 const GRAY = '#888';
 const LIGHT_BG = '#f8fafc';
 
-const SignUpScreen = ({ navigation }: any) => {
+const SignUpScreen = () => {
+  const navigation = useNavigation();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -31,13 +33,7 @@ const SignUpScreen = ({ navigation }: any) => {
     setTimeout(() => {
       setLoading(false);
       // Navigate directly after sign up
-      if (navigation.navigate) {
-        navigation.navigate('OTPVerification', { phone });
-      } else if (typeof navigation === 'function') {
-        navigation('OTPVerification', { phone });
-      } else {
-        navigation.goBack && navigation.goBack();
-      }
+      navigation.navigate('OTPVerification', { phone });
     }, 1000);
   };
 
@@ -181,9 +177,17 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: 40,
-    left: 16,
+    top: 20,
+    left: 20,
     zIndex: 10,
+    padding: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
   heading: {
     fontSize: 24,

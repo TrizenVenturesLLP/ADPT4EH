@@ -47,8 +47,22 @@ module.exports = {
     }),
   ],
   devServer: {
-    static: './dist',
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
     hot: true,
     port: 8080,
+    historyApiFallback: {
+      index: '/index.html',
+      disableDotRule: true,
+    },
+    compress: true,
+    open: false,
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+      },
+    },
   },
 };

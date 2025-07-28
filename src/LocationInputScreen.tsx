@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, Image, Modal, ScrollView } from 'react-native';
+import { useNavigation } from './SimpleNavigation';
 
 const PRIMARY_YELLOW = '#f9b233';
 const DARK = '#222';
 
-const LocationInputScreen = ({ navigation }: any) => {
+const LocationInputScreen = () => {
+  const navigation = useNavigation();
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [selectedTag, setSelectedTag] = useState('home');
   const [addressDetails, setAddressDetails] = useState({
@@ -16,24 +18,48 @@ const LocationInputScreen = ({ navigation }: any) => {
     country: ''
   });
 
-  const locationTags = [
+  const locationTags = useMemo(() => [
     { id: 'home', label: 'Home', icon: '🏠' },
     { id: 'office', label: 'office', icon: '🏢' },
     { id: 'other', label: 'other', icon: '❤️' }
-  ];
+  ], []);
 
-  const handleConfirm = () => {
+  const handleConfirm = useCallback(() => {
     // Handle confirmation logic here
-    console.log('Location details confirmed:', { selectedTag, addressDetails });
+    console.log('LocationInput - handleConfirm called');
+    console.log('Address details:', addressDetails);
+    console.log('Navigation object:', navigation);
+    if (navigation && navigation.navigate) {
+      console.log('LocationInput - Navigating to LocationConfirmation with addressDetails');
+      navigation.navigate('LocationConfirmation', { addressDetails });
+    } else {
+      console.log('LocationInput - Navigation object is null or navigate is not available');
+    }
     setShowLocationModal(false);
-  };
+  }, [addressDetails, navigation]);
 
-  const LocationDetailsModal = () => (
+  const handleAddressChange = useCallback((field: string, value: string) => {
+    setAddressDetails(prev => ({ ...prev, [field]: value }));
+  }, []);
+
+  const handleTagSelect = useCallback((tagId: string) => {
+    setSelectedTag(tagId);
+  }, []);
+
+  const handleModalClose = useCallback(() => {
+    setShowLocationModal(false);
+  }, []);
+
+  const handleModalOpen = useCallback(() => {
+    setShowLocationModal(true);
+  }, []);
+
+  const LocationDetailsModal = useMemo(() => (
     <Modal
       visible={showLocationModal}
       animationType="slide"
       transparent={true}
-      onRequestClose={() => setShowLocationModal(false)}
+      onRequestClose={handleModalClose}
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
@@ -42,7 +68,7 @@ const LocationInputScreen = ({ navigation }: any) => {
             <Text style={styles.modalTitle}>Enter Location details</Text>
             <TouchableOpacity 
               style={styles.closeButton}
-              onPress={() => setShowLocationModal(false)}
+              onPress={handleModalClose}
             >
               <Text style={styles.closeButtonText}>✕</Text>
             </TouchableOpacity>
@@ -60,7 +86,7 @@ const LocationInputScreen = ({ navigation }: any) => {
                       styles.tagButton,
                       selectedTag === tag.id && styles.tagButtonSelected
                     ]}
-                    onPress={() => setSelectedTag(tag.id)}
+                    onPress={() => handleTagSelect(tag.id)}
                   >
                     <Text style={styles.tagIcon}>{tag.icon}</Text>
                     <Text style={[
@@ -83,7 +109,7 @@ const LocationInputScreen = ({ navigation }: any) => {
                     style={styles.inputField}
                     placeholder="Door No & Building Name"
                     value={addressDetails.doorNo}
-                    onChangeText={(text) => setAddressDetails({...addressDetails, doorNo: text})}
+                    onChangeText={(text) => handleAddressChange('doorNo', text)}
                   />
                   <Text style={styles.updateText}>Updated based on your exact map pin</Text>
                 </View>
@@ -97,7 +123,7 @@ const LocationInputScreen = ({ navigation }: any) => {
                 style={styles.inputField}
                 placeholder="Area & Street"
                 value={addressDetails.area}
-                onChangeText={(text) => setAddressDetails({...addressDetails, area: text})}
+                onChangeText={(text) => handleAddressChange('area', text)}
               />
 
               {/* City */}
@@ -105,7 +131,7 @@ const LocationInputScreen = ({ navigation }: any) => {
                 style={styles.inputField}
                 placeholder="Enter your City"
                 value={addressDetails.city}
-                onChangeText={(text) => setAddressDetails({...addressDetails, city: text})}
+                onChangeText={(text) => handleAddressChange('city', text)}
               />
 
               {/* State */}
@@ -113,7 +139,7 @@ const LocationInputScreen = ({ navigation }: any) => {
                 style={styles.inputField}
                 placeholder="State"
                 value={addressDetails.state}
-                onChangeText={(text) => setAddressDetails({...addressDetails, state: text})}
+                onChangeText={(text) => handleAddressChange('state', text)}
               />
 
               {/* Pin Code and Country */}
@@ -122,13 +148,13 @@ const LocationInputScreen = ({ navigation }: any) => {
                   style={[styles.inputField, styles.halfInput]}
                   placeholder="Pin code"
                   value={addressDetails.pinCode}
-                  onChangeText={(text) => setAddressDetails({...addressDetails, pinCode: text})}
+                  onChangeText={(text) => handleAddressChange('pinCode', text)}
                 />
                 <TextInput
                   style={[styles.inputField, styles.halfInput]}
                   placeholder="Country"
                   value={addressDetails.country}
-                  onChangeText={(text) => setAddressDetails({...addressDetails, country: text})}
+                  onChangeText={(text) => handleAddressChange('country', text)}
                 />
               </View>
             </View>
@@ -141,7 +167,7 @@ const LocationInputScreen = ({ navigation }: any) => {
         </View>
       </View>
     </Modal>
-  );
+  ), [showLocationModal, selectedTag, addressDetails, locationTags, handleTagSelect, handleAddressChange, handleConfirm, handleModalClose]);
 
   if (Platform.select({ web: true, default: false })) {
     return (
@@ -181,12 +207,12 @@ const LocationInputScreen = ({ navigation }: any) => {
           </Text>
           <TouchableOpacity 
             style={styles.addButton}
-            onPress={() => setShowLocationModal(true)}
+            onPress={handleModalOpen}
           >
             <Text style={styles.addButtonText}>Add more address details</Text>
           </TouchableOpacity>
         </View>
-        <LocationDetailsModal />
+        {LocationDetailsModal}
       </div>
     );
   }
@@ -226,11 +252,11 @@ const LocationInputScreen = ({ navigation }: any) => {
       </Text>
       <TouchableOpacity 
         style={styles.addButton}
-        onPress={() => setShowLocationModal(true)}
+        onPress={handleModalOpen}
       >
         <Text style={styles.addButtonText}>Add more address details</Text>
       </TouchableOpacity>
-      <LocationDetailsModal />
+      {LocationDetailsModal}
     </View>
   );
 };

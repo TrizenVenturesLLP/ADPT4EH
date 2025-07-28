@@ -1,47 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import SignUpScreen from './SignUpScreen';
-import LoginScreen from './LoginScreen';
-import OTPVerificationScreen from './OTPVerificationScreen';
-import LocationInputScreen from './LocationInputScreen';
+import { useNavigation } from './SimpleNavigation';
 
 export default function LandingScreen() {
-  const [route, setRoute] = useState('landing');
-  const [otpPhone, setOtpPhone] = useState('');
-
-  if (route === 'signup') {
-    return <SignUpScreen navigation={{ goBack: () => setRoute('landing'), navigate: (r, params) => {
-      if (r === 'OTPVerification' && params && params.phone) {
-        setOtpPhone(params.phone);
-        setRoute('otp');
-      } else if (r === 'LocationInput') {
-        setRoute('location');
-      } else {
-        setRoute('landing');
-      }
-    } }} />;
-  }
-  if (route === 'login') {
-    return <LoginScreen navigation={{ goBack: () => setRoute('landing'), navigate: () => setRoute('landing') }} />;
-  }
-  if (route === 'otp') {
-    return <OTPVerificationScreen navigation={{ goBack: () => setRoute('landing'), navigate: (r) => {
-      if (r === 'LocationInput') setRoute('location');
-      else setRoute('landing');
-    } }} phone={otpPhone} />;
-  }
-  if (route === 'location') {
-    return <LocationInputScreen navigation={{ goBack: () => setRoute('landing') }} />;
-  }
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
       <Image source={require('../assets/images/extrahand-logo.png')} style={styles.logo} resizeMode="contain" />
       <Text style={styles.title}>Welcome to ExtraHand</Text>
-      <TouchableOpacity style={styles.button} onPress={() => setRoute('login')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
         <Text style={styles.buttonText}>Sign In</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.buttonOutline} onPress={() => setRoute('signup')}>
+      <TouchableOpacity style={styles.buttonOutline} onPress={() => navigation.navigate('SignUp')}>
         <Text style={styles.buttonOutlineText}>Create Account</Text>
       </TouchableOpacity>
     </View>
