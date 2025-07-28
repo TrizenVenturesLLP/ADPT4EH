@@ -138,7 +138,6 @@ const HeroSection = () => {
             alignItems: 'center',
             minHeight: 300,
             position: 'relative',
-            marginRight: 100,
           }}
         >
           <div
@@ -149,6 +148,9 @@ const HeroSection = () => {
               maxWidth: 400,
               minHeight: 320,
               animation: 'slideUp 1s ease',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <div
@@ -161,7 +163,7 @@ const HeroSection = () => {
                 width: '100%',
                 maxWidth: 400,
                 backdropFilter: 'blur(8px)',
-                marginRight: 0,
+                margin: '0 auto',
               }}
             >
               <div
@@ -262,7 +264,7 @@ const HeroSection = () => {
             .hero-container {
               flex-direction: column !important;
               gap: 32px !important;
-              padding: 0 16px !important;
+              padding: 0 0 !important;
             }
             .hero-text {
               flex: none !important;
@@ -291,14 +293,24 @@ const HeroSection = () => {
               flex: none !important;
               margin-right: 0 !important;
               min-height: 250px !important;
+              display: flex !important;
+              justify-content: center !important;
+              align-items: center !important;
+              width: 100% !important;
             }
             .mockup-container {
               max-width: 300px !important;
               min-height: 250px !important;
+              display: flex !important;
+              justify-content: center !important;
+              align-items: center !important;
             }
             .mockup-device {
               padding: 24px !important;
               border-radius: 24px !important;
+              margin: 0 auto !important;
+              width: 100% !important;
+              max-width: 300px !important;
             }
             .mockup-screen {
               padding: 16px !important;

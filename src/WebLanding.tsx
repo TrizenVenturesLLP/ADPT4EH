@@ -86,12 +86,19 @@ const Header = ({ onNavigate }) => {
         onClick={() => setShowMobileMenu(!showMobileMenu)}
         className="mobile-menu-button"
         style={{
-          display: 'none',
           background: 'transparent',
           border: 'none',
           fontSize: 24,
           cursor: 'pointer',
           padding: 8,
+          marginRight: 0,
+          minWidth: 40,
+          height: 40,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          zIndex: 1001,
         }}
       >
         ☰
@@ -104,6 +111,9 @@ const Header = ({ onNavigate }) => {
         gap: 24,
         alignItems: 'center',
         height: 48,
+        flex: 1,
+        marginLeft: 24,
+        marginRight: 24,
       }}>
         {centerMenu.map((item, index) =>
           item.label === "Browse Tasks" ? (
@@ -362,9 +372,16 @@ const WebLanding = () => {
       {/* Responsive CSS */}
       <style>
         {`
+          @media (min-width: 769px) {
+            .mobile-menu-button {
+              display: none !important;
+            }
+          }
+          
           @media (max-width: 768px) {
             .mobile-menu-button {
-              display: block !important;
+              display: flex !important;
+              margin-right: 8px !important;
             }
             
             .desktop-menu {
@@ -387,8 +404,31 @@ const WebLanding = () => {
           }
           
           @media (max-width: 480px) {
+            .header-container {
+              padding: 12px 16px !important;
+            }
+            
+            .mobile-menu-button {
+              display: flex !important;
+              margin-right: 4px !important;
+              min-width: 44px !important;
+              height: 44px !important;
+            }
+            
             body {
               font-size: 12px;
+            }
+          }
+          
+          @media (max-width: 360px) {
+            .header-container {
+              padding: 8px 12px !important;
+            }
+            
+            .mobile-menu-button {
+              margin-right: 2px !important;
+              min-width: 48px !important;
+              height: 48px !important;
             }
           }
         `}
