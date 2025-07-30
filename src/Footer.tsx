@@ -94,7 +94,7 @@ const socialIcons = [
 ];
 
 const AppStoreButton = () => (
-  <a href="#" aria-label="Download on the App Store" style={{ display: 'inline-block' }}>
+  <a href="#" aria-label="Download on the App Store" style={{ display: 'inline-block', textDecoration: 'none' }}>
     <div style={{ 
       display: 'flex', 
       alignItems: 'center', 
@@ -106,21 +106,21 @@ const AppStoreButton = () => (
       minWidth: 'clamp(140px, 25vw, 180px)', 
       minHeight: 'clamp(48px, 8vw, 56px)',
       width: '100%',
-      maxWidth: 200
+      maxWidth: 80
     }}>
       <svg width="clamp(32px, 6vw, 40px)" height="clamp(32px, 6vw, 40px)" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M21.7 14.7c-.1-2.1 1.7-3.1 1.8-3.2-1-1.5-2.6-1.7-3.1-1.7-1.3-.1-2.5.8-3.1.8-.6 0-1.6-.8-2.7-.8-1.4.1-2.7.8-3.4 2-1.5 2.6-.4 6.4 1.1 8.5.7 1 1.5 2.1 2.6 2.1 1 0 1.3-.7 2.6-.7s1.6.7 2.7.7c1.1 0 1.8-1 2.5-2 .8-1.1 1.1-2.2 1.1-2.3 0-.1-2.1-.8-2.1-3.2zm-2-6c.6-.7 1-1.7.9-2.7-.9.1-2 .6-2.6 1.3-.6.6-1.1 1.6-.9 2.5 1 .1 2-.5 2.6-1.1z" fill="#111"/>
       </svg>
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
-        <span style={{ fontSize: 'clamp(10px, 2vw, 12px)', color: '#111', lineHeight: 1 }}>Download on the</span>
-        <span style={{ fontSize: 'clamp(12px, 2.5vw, 16px)', color: '#111', fontWeight: 600, lineHeight: 1 }}>App Store</span>
+        <span style={{ fontSize: 'clamp(10px, 2vw, 12px)', color: '#111', lineHeight: 1, textDecoration: 'none' }}>Download on the</span>
+        <span style={{ fontSize: 'clamp(12px, 2.5vw, 16px)', color: '#111', fontWeight: 600, lineHeight: 1, textDecoration: 'none' }}>App Store</span>
       </div>
     </div>
   </a>
 );
 
 const GooglePlayButton = () => (
-  <a href="#" aria-label="Get it on Google Play" style={{ display: 'inline-block' }}>
+  <a href="#" aria-label="Get it on Google Play" style={{ display: 'inline-block', textDecoration: 'none' }}>
     <div style={{ 
       display: 'flex', 
       alignItems: 'center', 
@@ -132,7 +132,7 @@ const GooglePlayButton = () => (
       minWidth: 'clamp(140px, 25vw, 180px)', 
       minHeight: 'clamp(48px, 8vw, 56px)',
       width: '100%',
-      maxWidth: 200
+      maxWidth: 80
     }}>
       <svg width="clamp(24px, 5vw, 28px)" height="clamp(24px, 5vw, 28px)" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
         <polygon points="3,2 33,18 3,34" fill="#34A853"/>
@@ -140,8 +140,8 @@ const GooglePlayButton = () => (
         <polygon points="19,18 33,18 3,34" fill="#EA4335"/>
       </svg>
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1 }}>
-        <span style={{ fontSize: 'clamp(10px, 2vw, 12px)', color: '#111', lineHeight: 1 }}>Android App on</span>
-        <span style={{ fontSize: 'clamp(12px, 2.5vw, 16px)', color: '#111', fontWeight: 600, lineHeight: 1 }}>Google Play</span>
+        <span style={{ fontSize: 'clamp(10px, 2vw, 12px)', color: '#111', lineHeight: 1, textDecoration: 'none' }}>Android App on</span>
+        <span style={{ fontSize: 'clamp(12px, 2.5vw, 16px)', color: '#111', fontWeight: 600, lineHeight: 1, textDecoration: 'none' }}>Google Play</span>
       </div>
     </div>
   </a>
@@ -204,36 +204,36 @@ const Footer = () => {
           ))}
         </div>
         
-        <div style={{ 
+        <div className="footer-bottom" style={{ 
           display: 'flex', 
-          flexDirection: 'column',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          gap: 'clamp(24px, 4vw, 32px)', 
-          marginTop: 'clamp(32px, 6vw, 48px)'
+          marginTop: 'clamp(32px, 6vw, 48px)',
+          paddingTop: 'clamp(24px, 4vw, 32px)',
+          // borderTop: '1px solid #374151'
         }}>
           {/* Social Media Section */}
-          <div style={{ 
+          <div className="social-section" style={{ 
             display: 'flex', 
-            flexDirection: 'column',
+            flexDirection: 'row',
             alignItems: 'center', 
             gap: 'clamp(12px, 2.5vw, 18px)',
-            width: '100%'
           }}>
             <span style={{ 
-              color: '#fff', 
+              color: '#f9fafb', 
               fontSize: 'clamp(14px, 2.5vw, 16px)',
               fontWeight: 500
             }}>Follow us:</span>
             <div style={{ 
               display: 'flex', 
               gap: 'clamp(12px, 2vw, 18px)',
-              justifyContent: 'center',
-              flexWrap: 'wrap'
+              alignItems: 'center'
             }}>
               {socialIcons.map((icon, idx) => (
                 <a key={idx} href={icon.href} aria-label={icon.label} style={{ 
-                  width: 'clamp(36px, 6vw, 40px)', 
-                  height: 'clamp(36px, 6vw, 40px)', 
+                  width: 'clamp(38px, 7vw, 42px)', 
+                  height: 'clamp(38px, 7vw, 42px)', 
                   background: '#fff', 
                   borderRadius: '50%', 
                   display: 'flex', 
@@ -252,17 +252,65 @@ const Footer = () => {
           </div>
           
           {/* App Download Buttons */}
-          <div style={{ 
+          <div className="app-buttons" style={{ 
             display: 'flex', 
-            flexDirection: 'column',
-            gap: 'clamp(12px, 2.5vw, 16px)',
-            width: '100%',
-            maxWidth: 400
+            flexDirection: 'row',
+            gap: 'clamp(12px, 3.5vw, 26px)',
+            alignItems: 'center'
           }}>
             <AppStoreButton />
             <GooglePlayButton />
           </div>
         </div>
+        
+        {/* Mobile Responsive Styles */}
+        <style>
+          {`
+            @media (max-width: 768px) {
+              .footer-bottom {
+                flex-direction: column !important;
+                gap: 24px !important;
+                text-align: center !important;
+              }
+              .social-section {
+                flex-direction: column !important;
+                gap: 16px !important;
+              }
+              .app-buttons {
+                flex-direction: column !important;
+                gap: 16px !important;
+                width: 100% !important;
+                max-width: 300px !important;
+              }
+            }
+            
+            @media (max-width: 480px) {
+              .footer-bottom {
+                gap: 20px !important;
+              }
+              .social-section {
+                gap: 12px !important;
+              }
+              .app-buttons {
+                gap: 12px !important;
+                max-width: 280px !important;
+              }
+            }
+            
+            @media (max-width: 360px) {
+              .footer-bottom {
+                gap: 16px !important;
+              }
+              .social-section {
+                gap: 10px !important;
+              }
+              .app-buttons {
+                gap: 10px !important;
+                max-width: 260px !important;
+              }
+            }
+          `}
+        </style>
         
         <div style={{ 
           borderTop: '1px solid rgb(102, 102, 102)', 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform, Image } from 'react-native';
+import { useNavigation } from './SimpleNavigation';
 
 const PRIMARY_YELLOW = '#f9b233';
 const PRIMARY_BLUE = '#2563EB';
@@ -7,7 +8,42 @@ const DARK = '#222';
 const GRAY = '#888';
 const LIGHT_BG = '#f8fafc';
 
-const LoginScreen = ({ navigation }: any) => {
+// Custom Social Media Icons using PNG images for consistency
+const AppleIcon = () => (
+  <View style={{ width: 24, height: 24, justifyContent: 'center', alignItems: 'center' }}>
+    <Image 
+      source={require('../assets/social-svg/icons8-apple-inc-48.png')}
+      style={{ width: 24, height: 24, resizeMode: 'contain' }}
+    />
+  </View>
+);
+
+const GoogleIcon = () => (
+  <View style={{ width: 24, height: 24, justifyContent: 'center', alignItems: 'center' }}>
+    <Image 
+      source={require('../assets/social-svg/icons8-google-48.png')}
+      style={{ width: 24, height: 24, resizeMode: 'contain' }}
+    />
+  </View>
+);
+
+const FacebookIcon = () => (
+  <View style={{ width: 24, height: 24, justifyContent: 'center', alignItems: 'center' }}>
+    <Image 
+      source={require('../assets/social-svg/icons8-facebook-48.png')}
+      style={{ width: 44, height: 54, resizeMode: 'contain' }}
+    />
+  </View>
+);
+
+const EyeIcon = ({ visible }: { visible: boolean }) => (
+  <Text style={{ fontSize: 18, color: '#666' }}>
+    {visible ? '👁️' : '👁️‍🗨️'}
+  </Text>
+);
+
+const LoginScreen = () => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -27,6 +63,100 @@ const LoginScreen = ({ navigation }: any) => {
     }, 1000);
   };
 
+  // Android-specific layout matching the reference UI
+  if (Platform.OS !== 'web') {
+    return (
+      <View style={styles.androidContainer}>
+        {/* Back Button */}
+        <TouchableOpacity style={styles.androidBackButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.backArrow}>‹</Text>
+          <Text style={styles.backText}>Back</Text>
+        </TouchableOpacity>
+
+        {/* Title Section */}
+        <View style={styles.androidTitleSection}>
+          <Text style={styles.androidHeading}>Sign In</Text>
+          <Text style={styles.androidSubtext}>Login to your account</Text>
+        </View>
+
+        {/* Form Fields */}
+        <View style={styles.androidFormContainer}>
+          <View style={styles.androidInputGroup}>
+            <Text style={styles.androidLabel}>Email</Text>
+            <TextInput
+              style={styles.androidInput}
+              placeholder="johndoe@gmail.com"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              placeholderTextColor="#999"
+            />
+          </View>
+
+          <View style={styles.androidInputGroup}>
+            <Text style={styles.androidLabel}>Password</Text>
+            <View style={styles.androidPasswordContainer}>
+              <TextInput
+                style={styles.androidPasswordInput}
+                placeholder="************"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+                placeholderTextColor="#999"
+              />
+              <TouchableOpacity 
+                onPress={() => setShowPassword(!showPassword)} 
+                style={styles.androidEyeIcon}
+              >
+                <EyeIcon visible={showPassword} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+
+        {/* Forgot Password */}
+        <TouchableOpacity style={styles.androidForgotContainer}>
+          <Text style={styles.androidForgotText}>Forgot Password?</Text>
+        </TouchableOpacity>
+
+        {/* Login Button */}
+        <TouchableOpacity
+          style={styles.androidLoginButton}
+          onPress={handleLogin}
+          disabled={loading}
+        >
+          <Text style={styles.androidLoginButtonText}>
+            {loading ? 'Logging in...' : 'Login'}
+          </Text>
+        </TouchableOpacity>
+
+        {/* Social Login */}
+        <View style={styles.androidSocialSection}>
+          <Text style={styles.androidSocialText}>Or sign up with</Text>
+          <View style={styles.androidSocialButtons}>
+            <TouchableOpacity style={styles.androidSocialButton}>
+              <AppleIcon />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.androidSocialButton}>
+              <GoogleIcon />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.androidSocialButton}>
+              <FacebookIcon />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Sign Up Link */}
+        <View style={styles.androidSignUpLink}>
+          <Text style={styles.androidSignUpText}>
+            Don't have an account? <Text style={styles.androidSignUpLinkText} onPress={() => navigation.navigate('SignUp')}>Sign Up</Text>
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
+  // Web layout (keeping existing form frame)
   return (
     <View style={styles.container}>
       {/* Back Button */}
@@ -56,7 +186,7 @@ const LoginScreen = ({ navigation }: any) => {
             editable={true}
           />
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-            <Text style={{ fontSize: 18, color: GRAY }}>{showPassword ? '🙈' : '👁️'}</Text>
+            <EyeIcon visible={showPassword} />
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.forgotContainer} onPress={() => {}}>
@@ -73,18 +203,18 @@ const LoginScreen = ({ navigation }: any) => {
         {/* Social Login Icons */}
         <View style={styles.socialRow}>
           <TouchableOpacity style={styles.socialIconButton}>
-            <Text style={{ fontSize: 24 }}></Text>
+            <AppleIcon />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialIconButton}>
-            <Text style={{ fontSize: 24, color: '#EA4335' }}>G</Text>
+            <GoogleIcon />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialIconButton}>
-            <Text style={{ fontSize: 24, color: '#1877F3' }}>f</Text>
+            <FacebookIcon />
           </TouchableOpacity>
         </View>
         <Text style={styles.footerText}>
           Don't have an account ?{' '}
-          <Text style={styles.signupText} onPress={() => navigation.goBack()}>Sign Up</Text>
+          <Text style={styles.signupText} onPress={() => navigation.navigate('SignUp')}>Sign Up</Text>
         </Text>
       </View>
     </View>
@@ -229,6 +359,148 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   signupText: {
+    color: PRIMARY_BLUE,
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+  },
+  // New styles for Android layout
+  androidContainer: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: '#fff',
+  },
+  androidBackButton: {
+    position: 'absolute',
+    top: 40,
+    left: 16,
+    zIndex: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backArrow: {
+    fontSize: 22,
+    color: DARK,
+    marginRight: 8,
+  },
+  backText: {
+    fontSize: 16,
+    color: DARK,
+    fontWeight: 'bold',
+  },
+  androidTitleSection: {
+    alignItems: 'center',
+    marginTop: 100,
+    marginBottom: 20,
+  },
+  androidHeading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: DARK,
+    marginBottom: 4,
+  },
+  androidSubtext: {
+    fontSize: 14,
+    color: GRAY,
+    marginBottom: 20,
+  },
+  androidFormContainer: {
+    width: '100%',
+    marginBottom: 16,
+  },
+  androidInputGroup: {
+    marginBottom: 12,
+  },
+  androidLabel: {
+    fontSize: 13,
+    color: DARK,
+    marginBottom: 2,
+    fontWeight: '500',
+  },
+  androidInput: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: GRAY,
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+    backgroundColor: LIGHT_BG,
+  },
+  androidPasswordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 8,
+  },
+  androidPasswordInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: GRAY,
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+    backgroundColor: LIGHT_BG,
+  },
+  androidEyeIcon: {
+    position: 'absolute',
+    right: 16,
+    padding: 4,
+  },
+  androidForgotContainer: {
+    alignSelf: 'flex-end',
+    marginBottom: 16,
+  },
+  androidForgotText: {
+    color: PRIMARY_YELLOW,
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  androidLoginButton: {
+    width: '100%',
+    borderRadius: 8,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginBottom: 16,
+    backgroundColor: PRIMARY_YELLOW,
+  },
+  androidLoginButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  androidSocialSection: {
+    alignItems: 'center',
+    marginTop: 16,
+    marginBottom: 16,
+  },
+  androidSocialText: {
+    fontSize: 13,
+    color: GRAY,
+    marginBottom: 12,
+  },
+  androidSocialButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 16,
+  },
+  androidSocialButton: {
+    backgroundColor: '#fff',
+    borderRadius: 32,
+    padding: 10,
+    borderWidth: 0.4,
+    borderColor: GRAY,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 48,
+    height: 48,
+  },
+  androidSignUpLink: {
+    alignItems: 'center',
+  },
+  androidSignUpText: {
+    fontSize: 14,
+    color: DARK,
+  },
+  androidSignUpLinkText: {
     color: PRIMARY_BLUE,
     fontWeight: 'bold',
     textDecorationLine: 'underline',

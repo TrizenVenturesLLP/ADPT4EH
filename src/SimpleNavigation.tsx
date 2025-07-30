@@ -270,7 +270,8 @@ const SimpleNavigation: React.FC = () => {
   return (
     <>
       {renderScreen()}
-      {Platform.OS === 'web' && <DebugInfo />}
+      {Platform.OS === 'web'}
+      {/* {Platform.OS === 'web' && <DebugInfo />} */}
     </>
   );
 };

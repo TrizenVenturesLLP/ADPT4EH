@@ -73,7 +73,7 @@ const HowItWorksSection = () => {
               <img
                 src={require('../assets/mobilescreens/post-task.jpg')}
                 alt={steps[0].title}
-                style={{ width: '100%', maxWidth: 320, height: 'auto', borderRadius: 16, boxShadow: '0 2px 12px #0001' }}
+                style={{ width: '100%', maxWidth: 400, height: 'auto', borderRadius: 16, boxShadow: '0 2px 12px #0001' }}
               />
             </div>
             <h3 style={{ fontSize: 22, fontWeight: 900, color: '#1a202c', marginBottom: 10, fontFamily: 'Inter, sans-serif', lineHeight: 1.2 }}>{steps[0].title}</h3>
@@ -110,7 +110,7 @@ const HowItWorksSection = () => {
               <img
                 src={require('../assets/mobilescreens/set-budget.jpg')}
                 alt={steps[1].title}
-                style={{ width: '100%', maxWidth: 320, height: 'auto', borderRadius: 16, boxShadow: '0 2px 12px #0001' }}
+                style={{ width: '100%', maxWidth: 400, height: 'auto', borderRadius: 16, boxShadow: '0 2px 12px #0001' }}
               />
             </div>
             <h3 style={{ fontSize: 22, fontWeight: 900, color: '#1a202c', marginBottom: 10, fontFamily: 'Inter, sans-serif', lineHeight: 1.2 }}>{steps[1].title}</h3>
@@ -147,7 +147,7 @@ const HowItWorksSection = () => {
               <img
                 src={require('../assets/mobilescreens/approve-task.jpg')}
                 alt={steps[2].title}
-                style={{ width: '100%', maxWidth: 320, height: 'auto', borderRadius: 16, boxShadow: '0 2px 12px #0001' }}
+                style={{ width: '100%', maxWidth: 400, height: 'auto', borderRadius: 16, boxShadow: '0 2px 12px #0001' }}
               />
             </div>
             <h3 style={{ fontSize: 22, fontWeight: 900, color: '#1a202c', marginBottom: 10, fontFamily: 'Inter, sans-serif', lineHeight: 1.2 }}>{steps[2].title}</h3>
@@ -159,20 +159,20 @@ const HowItWorksSection = () => {
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 48 }}>
           <button
             style={{
-              fontSize: 20,
-              padding: '16px 48px',
+              fontSize: 18,
+              padding: '10px 18px',
               color: '#222',
               background: '#fff',
-              border: '4px solid #f9b233',
-              borderRadius: 12,
-              fontWeight: 700,
+              border: '2px solid #ffcc30',
+              borderRadius: 8,
+              fontWeight: 550,
               fontFamily: 'Inter, sans-serif',
               cursor: 'pointer',
               transition: 'background 0.2s, color 0.2s, border 0.2s, transform 0.2s',
               boxShadow: '0 2px 8px #f9b23322',
             }}
             onMouseOver={e => {
-              e.currentTarget.style.background = '#f9b233';
+              e.currentTarget.style.background = '#ffcc30';
               e.currentTarget.style.color = '#222';
               e.currentTarget.style.transform = 'scale(1.05)';
             }}

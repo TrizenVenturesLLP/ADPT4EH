@@ -2,46 +2,62 @@ import React from 'react';
 
 const benefits = [
   {
-    icon: '⏰',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12,6 12,12 16,14"/>
+      </svg>
+    ),
     title: 'Save Time & Costs',
     description: 'No more expensive trips or wasted time. Get things done without leaving your location.',
-    iconBg: '#e3e8f7',
-    iconColor: '#1a237e',
   },
   {
-    icon: '🛡️',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    ),
     title: 'Trustworthy & Verified',
     description: 'All task performers are background-checked and verified with real reviews from users.',
-    iconBg: '#e3e8f7',
-    iconColor: '#1a237e',
   },
   {
-    icon: '⚡',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+    ),
     title: 'Tech & Non-Tech Tasks',
     description: 'From router setup to grocery pickup, our network handles any type of task you need.',
-    iconBg: '#e3e8f7',
-    iconColor: '#1a237e',
   },
   {
-    icon: '📍',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </svg>
+    ),
     title: 'GPS-Based Matching',
     description: 'Smart location-based matching ensures you get the fastest and most reliable service.',
-    iconBg: '#e3e8f7',
-    iconColor: '#1a237e',
   },
   {
-    icon: '📈',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+      </svg>
+    ),
     title: 'Dual-Role Platform',
     description: 'Post tasks when you need help, or earn money by completing tasks in your area.',
-    iconBg: '#e3e8f7',
-    iconColor: '#1a237e',
   },
   {
-    icon: '✅',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11"/>
+      </svg>
+    ),
     title: 'High Success Rate',
     description: 'Thousands of tasks completed with a 98%+ satisfaction rate.',
-    iconBg: '#e3e8f7',
-    iconColor: '#1a237e',
   },
 ];
 
@@ -94,14 +110,15 @@ const BenefitsSection = () => {
                   width: 56,
                   height: 56,
                   borderRadius: 16,
-                  color:"hsl(220 13% 91%)",
-                  background: 'hsl(220 13% 91%)',
+                  background: '#e3e8f7',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   marginRight: 0,
                 }}>
-                  <span style={{ fontSize: 32, color: feature.iconColor }}>{feature.icon}</span>
+                  <div style={{ color: '#1a237e' }}>
+                    {feature.icon}
+                  </div>
                 </div>
                 <h3 style={{ fontSize: 24, fontWeight: 800, color: '#222', margin: 0, fontFamily: 'Inter, sans-serif' }}>{feature.title}</h3>
               </div>

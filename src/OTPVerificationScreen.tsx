@@ -58,128 +58,99 @@ const OTPVerificationScreen: React.FC = () => {
     }
   };
 
-  if (Platform.select({ web: true, default: false })) {
+  // Android-specific layout matching other screens
+  if (Platform.OS !== 'web') {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
-        <View style={styles.container}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Text style={{ fontSize: 18, color: DARK }}>{'←'} Back</Text>
-          </TouchableOpacity>
-          <View style={styles.card}>
-            <Text style={styles.heading}>Verification Code</Text>
-            <Text style={styles.subtext}>We have sent a verification code to</Text>
-            <Text style={styles.phoneText}>{maskPhone(phone)} <Text style={styles.editText}>Edit</Text></Text>
-            <View style={styles.otpRow}>
-              {otp.map((digit, idx) => (
-                <TextInput
-                  key={idx}
-                  ref={inputRefs[idx]}
-                  style={styles.otpInput}
-                  value={digit}
-                  onChangeText={text => handleChange(text, idx)}
-                  keyboardType="number-pad"
-                  maxLength={1}
-                  autoFocus={idx === 0}
-                  textAlign="center"
-                />
-              ))}
-            </View>
-            <View style={styles.resendRow}>
-              <Text style={styles.resendText}>Didn't receive OTP ? </Text>
-              <TouchableOpacity onPress={handleResend} disabled={timer > 0}>
-                <Text style={[styles.resendLink, timer > 0 && { color: GRAY }]}>Resend SMS in {timer.toString().padStart(2, '0')}s</Text>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity style={styles.continueButton} onPress={handleContinue} disabled={otp.join('').length !== 4}>
-              <Text style={styles.continueButtonText}>Continue</Text>
-            </TouchableOpacity>
-            
-            {/* Test button for debugging */}
-            <TouchableOpacity 
-              style={[styles.continueButton, { marginTop: 10, backgroundColor: '#ff4444' }]} 
-              onPress={() => {
-                console.log('=== TEST BUTTON PRESSED ===');
-                console.log('Navigation object:', navigation);
-                console.log('Navigation type:', typeof navigation);
-                console.log('Navigation keys:', navigation ? Object.keys(navigation) : 'null');
-                
-                if (navigation && navigation.navigate) {
-                  console.log('Test: Calling navigation.navigate("ChooseLocationMethod")');
-                  try {
-                    navigation.navigate('ChooseLocationMethod');
-                    console.log('Test: Navigation call completed');
-                  } catch (error) {
-                    console.error('Test: Navigation call failed:', error);
-                  }
-                } else {
-                  console.log('Test: Navigation object is invalid');
+      <View style={styles.androidContainer}>
+        {/* Back Button */}
+        <TouchableOpacity style={styles.androidBackButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.backArrow}>‹</Text>
+          <Text style={styles.backText}>Back</Text>
+        </TouchableOpacity>
 
-                }
-              }}
-            >
-              <Text style={styles.continueButtonText}>TEST NAVIGATION</Text>
-            </TouchableOpacity>
+        {/* Title Section */}
+        <View style={styles.androidTitleSection}>
+          <Text style={styles.androidHeading}>Verification Code</Text>
+          <Text style={styles.androidSubtext}>We have sent a verification code to</Text>
+          <Text style={styles.androidPhoneText}>{maskPhone(phone)} <Text style={styles.androidEditText}>Edit</Text></Text>
+        </View>
+
+        {/* OTP Input */}
+        <View style={styles.androidOtpContainer}>
+          <View style={styles.androidOtpRow}>
+            {otp.map((digit, idx) => (
+              <TextInput
+                key={idx}
+                ref={inputRefs[idx]}
+                style={styles.androidOtpInput}
+                value={digit}
+                onChangeText={text => handleChange(text, idx)}
+                keyboardType="number-pad"
+                maxLength={1}
+                autoFocus={idx === 0}
+                textAlign="center"
+              />
+            ))}
           </View>
         </View>
-      </div>
-    );
-  }
-  return (
-    <View style={styles.container}>
-                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={{ fontSize: 18, color: DARK }}>{Platform.OS === 'web' ? '←' : '‹'} Back</Text>
-      </TouchableOpacity>
-      <View style={styles.card}>
-        <Text style={styles.heading}>Verification Code</Text>
-        <Text style={styles.subtext}>We have sent a verification code to</Text>
-        <Text style={styles.phoneText}>{maskPhone(phone)} <Text style={styles.editText}>Edit</Text></Text>
-        <View style={styles.otpRow}>
-          {otp.map((digit, idx) => (
-            <TextInput
-              key={idx}
-              ref={inputRefs[idx]}
-              style={styles.otpInput}
-              value={digit}
-              onChangeText={text => handleChange(text, idx)}
-              keyboardType="number-pad"
-              maxLength={1}
-              autoFocus={idx === 0}
-              textAlign="center"
-            />
-          ))}
+
+        {/* Resend Section */}
+        <View style={styles.androidResendContainer}>
+          <Text style={styles.androidResendText}>
+            Didn't receive OTP ? <Text style={[styles.androidResendLink, timer > 0 && { color: GRAY }]} onPress={handleResend}>Resend SMS in {timer.toString().padStart(2, '0')}s</Text>
+          </Text>
         </View>
-        <View style={styles.resendRow}>
-          <Text style={styles.resendText}>Didn't receive OTP ? </Text>
-          <TouchableOpacity onPress={handleResend} disabled={timer > 0}>
-            <Text style={[styles.resendLink, timer > 0 && { color: GRAY }]}>Resend SMS in {timer.toString().padStart(2, '0')}s</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity style={styles.continueButton} onPress={handleContinue} disabled={otp.join('').length !== 4}>
-          <Text style={styles.continueButtonText}>Continue</Text>
-        </TouchableOpacity>
-        
-        {/* Test button for debugging */}
+
+        {/* Continue Button */}
         <TouchableOpacity 
-          style={[styles.continueButton, { marginTop: 10, backgroundColor: '#ff4444' }]} 
-          onPress={() => {
-            console.log('=== TEST BUTTON PRESSED (MOBILE) ===');
-            console.log('Navigation object:', navigation);
-            console.log('Navigation type:', typeof navigation);
-            console.log('Navigation keys:', navigation ? Object.keys(navigation) : 'null');
-            
-            console.log('Test: Calling navigation.navigate("ChooseLocationMethod")');
-            try {
-              navigation.navigate('ChooseLocationMethod');
-              console.log('Test: Navigation call completed');
-            } catch (error) {
-              console.error('Test: Navigation call failed:', error);
-            }
-          }}
+          style={[styles.androidContinueButton, { opacity: otp.join('').length === 4 ? 1 : 0.6 }]}
+          onPress={handleContinue} 
+          disabled={otp.join('').length !== 4}
         >
-          <Text style={styles.continueButtonText}>TEST NAVIGATION</Text>
+          <Text style={styles.androidContinueButtonText}>Continue</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    );
+  }
+
+  // Web layout (keeping existing card design)
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
+      <View style={styles.container}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Text style={{ fontSize: 18, color: DARK }}>{'←'} Back</Text>
+        </TouchableOpacity>
+        <View style={styles.card}>
+          <Text style={styles.heading}>Verification Code</Text>
+          <Text style={styles.subtext}>We have sent a verification code to</Text>
+          <Text style={styles.phoneText}>{maskPhone(phone)} <Text style={styles.editText}>Edit</Text></Text>
+          <View style={styles.otpRow}>
+            {otp.map((digit, idx) => (
+              <TextInput
+                key={idx}
+                ref={inputRefs[idx]}
+                style={styles.otpInput}
+                value={digit}
+                onChangeText={text => handleChange(text, idx)}
+                keyboardType="number-pad"
+                maxLength={1}
+                autoFocus={idx === 0}
+                textAlign="center"
+              />
+            ))}
+          </View>
+          <View style={styles.resendRow}>
+            <Text style={styles.resendText}>Didn't receive OTP ? </Text>
+            <TouchableOpacity onPress={handleResend} disabled={timer > 0}>
+              <Text style={[styles.resendLink, timer > 0 && { color: GRAY }]}>Resend SMS in {timer.toString().padStart(2, '0')}s</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.continueButton} onPress={handleContinue} disabled={otp.join('').length !== 4}>
+            <Text style={styles.continueButtonText}>Continue</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </div>
   );
 };
 
@@ -250,7 +221,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     gap: 12,
-    marginBottom: 24,
+    marginBottom: 34,
   },
   otpInput: {
     width: 48,
@@ -262,15 +233,20 @@ const styles = StyleSheet.create({
     backgroundColor: LIGHT_BG,
     textAlign: 'center',
     marginHorizontal: 6,
+    marginBottom: 18,
   },
   resendRow: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 18,
+    justifyContent: 'center',
   },
   resendText: {
+    textAlign: 'center',
     color: DARK,
     fontSize: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   resendLink: {
     color: PRIMARY_YELLOW,
@@ -286,6 +262,106 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   continueButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  // New styles for Android-specific layout
+  androidContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 24,
+  },
+  androidBackButton: {
+    position: 'absolute',
+    top: 40,
+    left: 16,
+    zIndex: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backArrow: {
+    fontSize: 22,
+    color: DARK,
+    marginRight: 8,
+  },
+  backText: {
+    fontSize: 16,
+    color: DARK,
+    fontWeight: 'bold',
+  },
+  androidTitleSection: {
+    alignItems: 'center',
+    marginTop: 100,
+    marginBottom: 40,
+  },
+  androidHeading: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: DARK,
+    marginBottom: 8,
+  },
+  androidSubtext: {
+    fontSize: 15,
+    color: GRAY,
+    marginBottom: 12,
+  },
+  androidPhoneText: {
+    fontSize: 16,
+    color: DARK,
+    marginBottom: 18,
+  },
+  androidEditText: {
+    color: PRIMARY_YELLOW,
+    fontWeight: '600',
+    fontSize: 15,
+  },
+  androidOtpContainer: {
+    width: '100%',
+    maxWidth: 400,
+    alignItems: 'center',
+  },
+  androidOtpRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 12,
+    marginBottom: 30,
+  },
+  androidOtpInput: {
+    width: 48,
+    height: 48,
+    borderWidth: 1,
+    borderColor: GRAY,
+    borderRadius: 8,
+    fontSize: 22,
+    backgroundColor: LIGHT_BG,
+    textAlign: 'center',
+    marginHorizontal: 6,
+  },
+  androidResendContainer: {
+    alignItems: 'center',
+    marginBottom: 18,
+    justifyContent: 'center',
+  },
+  androidResendText: {
+    color: DARK,
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  androidResendLink: {
+    color: PRIMARY_YELLOW,
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  androidContinueButton: {
+    width: '100%',
+    borderRadius: 8,
+    paddingVertical: 14,
+    alignItems: 'center',
+    backgroundColor: PRIMARY_YELLOW,
+    marginTop: 8,
+  },
+  androidContinueButtonText: {
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,

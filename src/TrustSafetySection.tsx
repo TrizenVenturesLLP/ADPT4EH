@@ -2,27 +2,50 @@ import React from 'react';
 
 const trustFeatures = [
   {
-    icon: '🛡️',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+      </svg>
+    ),
     title: 'Verified Performers',
     description: 'All task performers undergo background checks and identity verification.',
   },
   {
-    icon: '⭐',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+    ),
     title: 'Review System',
     description: 'Transparent ratings and reviews from real users help you choose the right person.',
   },
   {
-    icon: '🔒',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+        <circle cx="12" cy="16" r="1"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    ),
     title: 'Secure Payments',
     description: 'Your money is protected with escrow payments released only after task completion.',
   },
   {
-    icon: '💬',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+    ),
     title: 'Real-time Communication',
     description: 'Stay connected with live chat, live location sharing, and instant updates.',
   },
   {
-    icon: '📷',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+        <circle cx="12" cy="13" r="3"/>
+      </svg>
+    ),
     title: 'Proof of Work',
     description: 'Every completed task comes with visual proof of photos or videos, shared directly in the app. This helps you verify the quality and completion of work even when you\'re away, ensuring full transparency, accountability, and peace of mind.',
   },
@@ -102,15 +125,18 @@ const TrustSafetySection = () => {
                   width: 'clamp(48px, 6vw, 64px)',
                   height: 'clamp(48px, 6vw, 64px)',
                   borderRadius: 20,
-                  background: '#e0e7ff',
-                  color: '#2250d7',
+                  background: 'hsl(42deg 96% 62% / 10%)',
+                  color: 'hsl(42 96% 62%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: 'clamp(24px, 4vw, 32px)',
                   flexShrink: 0,
                   marginRight: 0,
-                }}>{feature.icon}</div>
+                }}>
+                  <div style={{ color: 'hsl(42 96% 62%)' }}>
+                    {feature.icon}
+                  </div>
+                </div>
                 <div style={{ textAlign: 'left', flex: 1 }}>
                   <h3 style={{ 
                     fontSize: 'clamp(18px, 3vw, 24px)', 
@@ -153,15 +179,18 @@ const TrustSafetySection = () => {
                 width: 'clamp(48px, 6vw, 64px)',
                 height: 'clamp(48px, 6vw, 64px)',
                 borderRadius: 20,
-                background: '#e0e7ff',
-                color: '#2250d7',
+                background: 'hsl(42deg 96% 62% / 10%)',
+                color: 'hsl(42 96% 62%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 'clamp(24px, 4vw, 32px)',
                 flexShrink: 0,
                 marginRight: 0,
-              }}>{trustFeatures[4].icon}</div>
+              }}>
+                <div style={{ color: 'hsl(42 96% 62%)' }}>
+                  {trustFeatures[4].icon}
+                </div>
+              </div>
               <div style={{ textAlign: 'left', flex: 1 }}>
                 <h3 style={{ 
                   fontSize: 'clamp(18px, 3vw, 24px)', 

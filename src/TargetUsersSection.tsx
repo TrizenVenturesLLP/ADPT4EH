@@ -123,16 +123,16 @@ const TargetUsersSection = () => {
   const gridHeight = 420;
 
   return (
-    <section style={{ background: '#fdf8f3', padding: '0', minHeight: 600 }}>
+    <section style={{ background: '#fdf8f3', padding: '0px 80px 0px 100px', minHeight: 600 }}>
       <div className="target-users-container" style={{
         maxWidth: 1400,
         margin: '0 auto',
-        padding: '0 24px',
+        // padding: '0px 80px 0px 100px',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 80,
+        gap: 0,
         minHeight: 600,
       }}>
         {/* Left Column */}
@@ -147,18 +147,18 @@ const TargetUsersSection = () => {
           marginTop: 0 
         }}>
           <h2 className="target-users-title" style={{
-            fontSize: 48,
+            fontSize: 36,
             fontWeight: 800,
             color: '#1a237e',
             marginBottom: 32,
-            lineHeight: 1.1,
+            lineHeight: 1.3,
             fontFamily: 'Inter, sans-serif',
           }}>
             Post Any Task.<br />Perform What You Love.
           </h2>
           <ol className="target-users-steps" style={{ marginBottom: 40, paddingLeft: 0, listStyle: 'none' }}>
             {[
-              'Post any kind of task—big or small, in any domain.',
+              'Post any kind of task big or small, in any domain.',
               'Set your requirements and budget.',
               'Performers pick tasks that match their skills and capabilities.',
             ].map((step, idx) => (
@@ -178,8 +178,8 @@ const TargetUsersSection = () => {
                   flexShrink: 0,
                 }}>{idx + 1}</span>
                 <span style={{ 
-                  fontSize: 20, 
-                  color: '#1a237e', 
+                  fontSize: 19, 
+                  color: 'rgb(16 34 102)', 
                   fontWeight: 500, 
                   fontFamily: 'Inter, sans-serif',
                   lineHeight: 1.4,
@@ -195,10 +195,10 @@ const TargetUsersSection = () => {
               background: '#2250d7',
               color: '#fff',
               fontWeight: 700,
-              fontSize: 22,
-              padding: '16px 0',
+              fontSize: 20,
+              padding: '14px 0',
               width: 210,
-              borderRadius: 10,
+              borderRadius: 8,
               boxShadow: '0 4px 16px #2250d733',
               border: 'none',
               cursor: 'pointer',
@@ -221,29 +221,34 @@ const TargetUsersSection = () => {
           alignItems: 'flex-start', 
           width: '100%', 
           height: gridHeight,
-          padding: '0 16px',
+          // padding: '0 0px',
         }}>
           <ScrollingGrid height={gridHeight} isMobile={false} />
         </div>
       </div>
       
-      {/* Mobile Grid - Hidden on desktop */}
-      <div className="target-users-mobile-grid" style={{ 
-        display: 'none',
-        padding: '0 16px',
-        marginTop: 32,
-      }}>
-        <ScrollingGrid height={300} isMobile={true} />
-      </div>
+             {/* Mobile Grid - Hidden on desktop */}
+       <div className="target-users-mobile-grid" style={{ 
+         display: 'none',
+         padding: '0',
+         marginTop: 0,
+         height: '300px',
+         overflow: 'hidden',
+       }}>
+         <ScrollingGrid height={300} isMobile={true} />
+       </div>
 
       {/* Responsive Styles */}
       <style>
         {`
           @media (max-width: 768px) {
+            section {
+              padding: 0px 20px 0px 20px !important;
+            }
             .target-users-container {
               flex-direction: column !important;
-              gap: 32px !important;
-              padding: 0 16px !important;
+              gap: 40px !important;
+              padding: 0 !important;
               min-height: auto !important;
             }
             .target-users-text {
@@ -253,55 +258,100 @@ const TargetUsersSection = () => {
               height: auto !important;
               text-align: center !important;
               align-items: center !important;
+              margin-bottom: 20px !important;
             }
             .target-users-title {
-              font-size: 32px !important;
+              font-size: 28px !important;
               text-align: center !important;
+              margin-bottom: 24px !important;
+              line-height: 1.2 !important;
             }
             .target-users-steps {
-              margin-bottom: 24px !important;
+              margin-bottom: 32px !important;
             }
             .target-users-step {
               text-align: left !important;
               align-items: flex-start !important;
+              margin-bottom: 16px !important;
             }
             .target-users-step span:last-child {
               font-size: 16px !important;
+              line-height: 1.4 !important;
             }
             .target-users-button {
               width: 100% !important;
               max-width: 280px !important;
               font-size: 18px !important;
-              padding: 14px 0 !important;
+              padding: 16px 0 !important;
+              margin: 0 auto !important;
             }
             .target-users-grid {
               display: none !important;
             }
             .target-users-mobile-grid {
               display: block !important;
+              padding: 0 !important;
+              margin-top: 0 !important;
             }
           }
           
           @media (min-width: 769px) and (max-width: 1200px) {
+            section {
+              padding: 0px 40px 0px 60px !important;
+            }
             .target-users-container {
-              gap: 40px !important;
-              padding: 0 32px !important;
+              gap: 60px !important;
+              padding: 0 !important;
             }
             .target-users-grid {
-              padding: 0 8px !important;
+              padding: 0 !important;
+            }
+            .target-users-title {
+              font-size: 32px !important;
+            }
+            .target-users-step span:last-child {
+              font-size: 17px !important;
             }
           }
           
           @media (max-width: 480px) {
+            section {
+              padding: 0px 16px 0px 16px !important;
+            }
             .target-users-title {
-              font-size: 28px !important;
+              font-size: 24px !important;
+              margin-bottom: 20px !important;
+            }
+            .target-users-step {
+              margin-bottom: 14px !important;
             }
             .target-users-step span:last-child {
               font-size: 14px !important;
             }
             .target-users-button {
               font-size: 16px !important;
+              padding: 14px 0 !important;
+              max-width: 240px !important;
+            }
+            .target-users-steps {
+              margin-bottom: 28px !important;
+            }
+          }
+          
+          @media (max-width: 360px) {
+            section {
+              padding: 0px 12px 0px 12px !important;
+            }
+            .target-users-title {
+              font-size: 22px !important;
+            }
+            .target-users-step span:last-child {
+              font-size: 13px !important;
+            }
+            .target-users-button {
+              font-size: 15px !important;
               padding: 12px 0 !important;
+              max-width: 220px !important;
             }
           }
         `}

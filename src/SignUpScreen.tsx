@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform, ScrollView, Image } from 'react-native';
 import { useNavigation } from './SimpleNavigation';
 
 const PRIMARY_YELLOW = '#f9b233';
@@ -7,6 +7,40 @@ const PRIMARY_BLUE = '#2563EB';
 const DARK = '#222';
 const GRAY = '#888';
 const LIGHT_BG = '#f8fafc';
+
+// Custom Social Media Icons using PNG images for consistency
+const AppleIcon = () => (
+  <View style={{ width: 24, height: 24, justifyContent: 'center', alignItems: 'center' }}>
+    <Image 
+      source={require('../assets/social-svg/icons8-apple-inc-48.png')}
+      style={{ width: 24, height: 24, resizeMode: 'contain' }}
+    />
+  </View>
+);
+
+const GoogleIcon = () => (
+  <View style={{ width: 24, height: 24, justifyContent: 'center', alignItems: 'center' }}>
+    <Image 
+      source={require('../assets/social-svg/icons8-google-48.png')}
+      style={{ width: 24, height: 24, resizeMode: 'contain' }}
+    />
+  </View>
+);
+
+const FacebookIcon = () => (
+  <View style={{ width: 24, height: 24, justifyContent: 'center', alignItems: 'center' }}>
+    <Image 
+      source={require('../assets/social-svg/icons8-facebook-48.png')}
+      style={{ width: 44, height: 54, resizeMode: 'contain' }}
+    />
+  </View>
+);
+
+const EyeIcon = ({ visible }: { visible: boolean }) => (
+  <Text style={{ fontSize: 18, color: '#666' }}>
+    {visible ? '👁️' : '👁️‍🗨️'}
+  </Text>
+);
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
@@ -37,11 +71,162 @@ const SignUpScreen = () => {
     }, 1000);
   };
 
+  // Android-specific layout matching the reference UI
+  if (Platform.OS !== 'web') {
+    return (
+      <View style={styles.androidContainer}>
+        {/* Back Button */}
+        <TouchableOpacity style={styles.androidBackButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.backArrow}>‹</Text>
+          <Text style={styles.backText}>Back</Text>
+        </TouchableOpacity>
+
+        <ScrollView 
+          style={styles.androidScrollView}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.androidScrollContent}
+        >
+          {/* Title Section */}
+          <View style={styles.androidTitleSection}>
+            <Text style={styles.androidHeading}>Create Account</Text>
+            <Text style={styles.androidSubtext}>Sign up to get started</Text>
+          </View>
+
+          {/* Form Fields */}
+          <View style={styles.androidFormContainer}>
+            <View style={styles.androidInputGroup}>
+              <Text style={styles.androidLabel}>Name</Text>
+              <TextInput
+                style={styles.androidInput}
+                placeholder="Ex. John Doe"
+                value={fullName}
+                onChangeText={setFullName}
+                placeholderTextColor="#999"
+              />
+            </View>
+
+            <View style={styles.androidInputGroup}>
+              <Text style={styles.androidLabel}>Email</Text>
+              <TextInput
+                style={styles.androidInput}
+                placeholder="johndoe@gmail.com"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                placeholderTextColor="#999"
+              />
+            </View>
+
+            <View style={styles.androidInputGroup}>
+              <Text style={styles.androidLabel}>Phone Number</Text>
+              <TextInput
+                style={styles.androidInput}
+                placeholder="8985******"
+                value={phone}
+                onChangeText={setPhone}
+                keyboardType="phone-pad"
+                placeholderTextColor="#999"
+              />
+            </View>
+
+            <View style={styles.androidInputGroup}>
+              <Text style={styles.androidLabel}>Password</Text>
+              <View style={styles.androidPasswordContainer}>
+                <TextInput
+                  style={styles.androidPasswordInput}
+                  placeholder="************"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={!showPassword}
+                  placeholderTextColor="#999"
+                />
+                <TouchableOpacity 
+                  onPress={() => setShowPassword(!showPassword)} 
+                  style={styles.androidEyeIcon}
+                >
+                  <EyeIcon visible={showPassword} />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={styles.androidInputGroup}>
+              <Text style={styles.androidLabel}>Confirm Password</Text>
+              <View style={styles.androidPasswordContainer}>
+                <TextInput
+                  style={styles.androidPasswordInput}
+                  placeholder="************"
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  secureTextEntry={!showConfirmPassword}
+                  placeholderTextColor="#999"
+                />
+                <TouchableOpacity 
+                  onPress={() => setShowConfirmPassword(!showConfirmPassword)} 
+                  style={styles.androidEyeIcon}
+                >
+                  <EyeIcon visible={showConfirmPassword} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+
+          {/* Terms and Conditions */}
+          <TouchableOpacity 
+            style={styles.androidCheckboxContainer} 
+            onPress={() => setAgree(!agree)}
+          >
+            <View style={[styles.androidCheckbox, { backgroundColor: agree ? PRIMARY_YELLOW : 'transparent' }]}>
+              {agree && <Text style={styles.checkmarkText}>✓</Text>}
+            </View>
+            <Text style={styles.androidCheckboxLabel}>
+              Agree with <Text style={styles.androidTermsText}>Terms & Condition</Text>
+            </Text>
+          </TouchableOpacity>
+
+          {/* Sign Up Button */}
+          <TouchableOpacity
+            style={[styles.androidSignUpButton, { opacity: agree ? 1 : 0.6 }]}
+            disabled={!agree || loading}
+            onPress={agree ? handleSignUp : undefined}
+          >
+            <Text style={styles.androidSignUpButtonText}>
+              {loading ? 'Signing Up...' : 'Sign Up'}
+            </Text>
+          </TouchableOpacity>
+
+          {/* Social Sign Up */}
+          <View style={styles.androidSocialSection}>
+            <Text style={styles.androidSocialText}>Or sign up with</Text>
+            <View style={styles.androidSocialButtons}>
+              <TouchableOpacity style={styles.androidSocialButton}>
+                <AppleIcon />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.androidSocialButton}>
+                <GoogleIcon />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.androidSocialButton}>
+                <FacebookIcon />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Login Link */}
+          <View style={styles.androidLoginLink}>
+            <Text style={styles.androidLoginText}>
+              Already have an account? <Text style={styles.androidSignInLink} onPress={() => navigation.navigate('Login')}>Sign In</Text>
+            </Text>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
+
+  // Web layout (keeping existing form frame)
   return (
     <View style={styles.container}>
       {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={{ fontSize: 22, color: DARK }}>{Platform.OS === 'web' ? '←' : '‹'}</Text>
+        <Text style={{ fontSize: 22, color: DARK }}>←</Text>
       </TouchableOpacity>
       <View style={styles.card}>
         <Text style={styles.heading}>Create Account</Text>
@@ -83,7 +268,7 @@ const SignUpScreen = () => {
             editable={true}
           />
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-            <Text style={{ fontSize: 18, color: GRAY }}>{showPassword ? '🙈' : '👁️'}</Text>
+            <EyeIcon visible={showPassword} />
           </TouchableOpacity>
         </View>
         <Text style={styles.label}>Confirm Password</Text>
@@ -97,7 +282,7 @@ const SignUpScreen = () => {
             editable={true}
           />
           <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)} style={styles.eyeIcon}>
-            <Text style={{ fontSize: 18, color: GRAY }}>{showConfirmPassword ? '🙈' : '👁️'}</Text>
+            <EyeIcon visible={showConfirmPassword} />
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.checkboxContainer} onPress={() => setAgree(!agree)} activeOpacity={0.8}>
@@ -134,18 +319,18 @@ const SignUpScreen = () => {
         {/* Social Signup Buttons */}
         <View style={styles.socialRow}>
           <TouchableOpacity style={styles.socialIconButton}>
-            <Text style={{ fontSize: 24 }}></Text>
+            <AppleIcon />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialIconButton}>
-            <Text style={{ fontSize: 24, color: '#EA4335' }}>G</Text>
+            <GoogleIcon />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialIconButton}>
-            <Text style={{ fontSize: 24, color: '#1877F3' }}>f</Text>
+            <FacebookIcon />
           </TouchableOpacity>
         </View>
         <Text style={styles.footerText}>
           Already have an account?{' '}
-          <Text style={styles.loginText} onPress={() => navigation.goBack()}>Sign In</Text>
+          <Text style={styles.loginText} onPress={() => navigation.navigate('Login')}>Sign In</Text>
         </Text>
       </View>
     </View>
@@ -155,12 +340,191 @@ const SignUpScreen = () => {
 export default SignUpScreen;
 
 const styles = StyleSheet.create({
+  // Android-specific styles
+  androidContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  androidBackButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 60,
+    paddingBottom: 20,
+  },
+  backArrow: {
+    fontSize: 24,
+    color: '#000',
+    marginRight: 8,
+  },
+  backText: {
+    fontSize: 16,
+    color: '#000',
+    fontWeight: '500',
+  },
+  androidScrollView: {
+    flex: 1,
+  },
+  androidScrollContent: {
+    paddingHorizontal: 20,
+    paddingBottom: 40,
+  },
+  androidTitleSection: {
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  androidHeading: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#000',
+    marginBottom: 8,
+  },
+  androidSubtext: {
+    fontSize: 16,
+    color: '#666',
+  },
+  androidFormContainer: {
+    marginBottom: 30,
+  },
+  androidInputGroup: {
+    marginBottom: 20,
+  },
+  androidLabel: {
+    fontSize: 14,
+    color: '#000',
+    marginBottom: 8,
+    fontWeight: '500',
+  },
+  androidInput: {
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+    padding: 16,
+    fontSize: 16,
+    color: '#000',
+  },
+  androidPasswordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+  },
+  androidPasswordInput: {
+    flex: 1,
+    padding: 16,
+    fontSize: 16,
+    color: '#000',
+  },
+  androidEyeIcon: {
+    padding: 16,
+  },
+  eyeIconText: {
+    fontSize: 18,
+    color: '#666',
+  },
+  androidCheckboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  androidCheckbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: PRIMARY_YELLOW,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  checkmarkText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  androidCheckboxLabel: {
+    fontSize: 14,
+    color: '#000',
+    flex: 1,
+  },
+  androidTermsText: {
+    color: PRIMARY_YELLOW,
+    fontWeight: 'bold',
+  },
+  androidSignUpButton: {
+    backgroundColor: PRIMARY_YELLOW,
+    borderRadius: 8,
+    paddingVertical: 16,
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  androidSignUpButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  androidSocialSection: {
+    marginBottom: 30,
+  },
+  androidSocialText: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  androidSocialButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 20,
+  },
+  androidSocialButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  appleIconContainer: {
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  appleIcon: {
+    fontSize: 24,
+  },
+  googleIcon: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#EA4335',
+  },
+  facebookIcon: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#1877F3',
+  },
+  androidLoginLink: {
+    alignItems: 'center',
+  },
+  androidLoginText: {
+    fontSize: 14,
+    color: '#000',
+  },
+  androidSignInLink: {
+    color: PRIMARY_BLUE,
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+  },
+
+  // Web styles (existing)
   container: {
     flex: 1,
     padding: 24,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center', // changed from 'flex-start' to 'center' for vertical centering
+    justifyContent: 'center',
   },
   card: {
     width: '100%',

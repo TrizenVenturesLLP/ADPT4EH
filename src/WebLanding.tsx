@@ -63,20 +63,22 @@ const Header = ({ onNavigate }) => {
   return (
     <div className="header-container" style={{
       width: '100%',
+      maxWidth: '100vw',
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: '16px',
-      borderBottom: '1px solid #e5e7eb',
+      padding: '16px 24px',
       background: '#fff',
       position: 'relative',
       zIndex: 1000,
+      marginTop: -4,
+      boxSizing: 'border-box',
     }}>
       {/* Left: Logo */}
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         <img src={require('../assets/images/logo.png')} alt="Extrahand Logo" style={{ height: 32, width: 32, marginRight: 8 }} />
-        <span style={{ fontSize: 24, fontWeight: 700, color: '#1f2937', fontFamily: 'Inter, sans-serif' }}>Extrahand</span>
+        <span style={{ fontSize: 18, fontWeight: 700, color: 'hsl(220 13% 18%)', fontFamily: 'Inter, sans-serif' }}>Extrahand</span>
       </div>
 
       {/* Mobile Menu Button */}
@@ -120,13 +122,13 @@ const Header = ({ onNavigate }) => {
                 onClick={() => setShowCategories((prev) => !prev)}
                 style={{
                   position: 'relative',
-                  background: item.type === 'button' ? '#f9b233' : 'transparent',
-                  color: item.type === 'button' ? '#222' : (activeItem === item.label ? '#000' : '#666'),
-                  fontWeight: 500,
+                  background: item.type === 'button' ? '#ffcc30' : 'transparent',
+                  color: item.type === 'button' ? '#111827' : (activeItem === item.label ? '#374151' : '#6b7280'),
+                  fontWeight: item.type === 'button' ? 600 : 500,
                   fontSize: 16,
                   border: 'none',
                   borderRadius: item.type === 'button' ? 8 : 0,
-                  padding: item.type === 'button' ? '8px 20px' : '0',
+                  padding: item.type === 'button' ? '12px 20px' : '0',
                   marginRight: 0,
                   cursor: 'pointer',
                   fontFamily: 'Inter, sans-serif',
@@ -137,7 +139,22 @@ const Header = ({ onNavigate }) => {
                 }}
               >
                 <span>{item.label}</span>
-                <span style={{ marginLeft: 4, fontSize: 14, color: '#888' }}>▼</span>
+                {item.icon && (
+                  <span style={{ marginLeft: 6, fontSize: 14, color: '#6b7280', verticalAlign: 'middle' }}></span>
+                )}
+                {(activeItem === item.label || showCategories) && (
+                  <span style={{
+                    position: 'absolute',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    top: -8,
+                    width: '100%',
+                    height: 2,
+                    background: '#6b7280',
+                    borderRadius: 1,
+                    display: 'block',
+                  }} />
+                )}
               </button>
               {showCategories && (
                 <div className="categories-dropdown" style={{
@@ -169,11 +186,12 @@ const Header = ({ onNavigate }) => {
                           <li key={cat}>
                             <a href="#" style={{
                               display: "block",
-                              color: "#333",
+                              color: "#374151",
                               textDecoration: "none",
                               padding: "4px 0",
                               fontSize: 14,
                               borderRadius: 4,
+                              fontFamily: 'Inter, sans-serif',
                             }}>{cat}</a>
                           </li>
                         ))}
@@ -188,13 +206,13 @@ const Header = ({ onNavigate }) => {
               onClick={() => handleNavigate(item)}
               style={{
                 position: 'relative',
-                background: item.type === 'button' ? '#f9b233' : 'transparent',
-                color: item.type === 'button' ? '#222' : (activeItem === item.label ? '#000' : '#666'),
-                fontWeight: 500,
-                fontSize: 16,
+                background: item.type === 'button' ? '#ffcc30' : 'transparent',
+                color: item.type === 'button' ? '#111827' : (activeItem === item.label ? '#374151' : '#6b7280'),
+                fontWeight: item.type === 'button' ? 550 : 450,
+                fontSize: 15,
                 border: 'none',
                 borderRadius: item.type === 'button' ? 8 : 0,
-                padding: item.type === 'button' ? '8px 20px' : '0',
+                padding: item.type === 'button' ? '12px 20px' : '0',
                 marginRight: 0,
                 cursor: 'pointer',
                 fontFamily: 'Inter, sans-serif',
@@ -206,17 +224,18 @@ const Header = ({ onNavigate }) => {
             >
               <span>{item.label}</span>
               {item.icon && (
-                <span style={{ marginLeft: 4, fontSize: 14, color: '#888' }}>▼</span>
+                <span style={{ marginLeft: 6, fontSize: 14, color: '#6b7280' }}>⌄</span>
               )}
-              {activeItem === item.label && item.type !== 'button' && (
+              {activeItem === item.label && (
                 <span style={{
                   position: 'absolute',
-                  left: 0,
-                  right: 0,
-                  bottom: -4,
-                  height: 4,
-                  background: '#f9b233',
-                  borderRadius: 4,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  top: -8,
+                  width: '100%',
+                  height: 2,
+                  background: '#6b7280',
+                  borderRadius: 1,
                   display: 'block',
                 }} />
               )}
@@ -228,7 +247,7 @@ const Header = ({ onNavigate }) => {
       {/* Desktop Right Menu */}
       <div className="desktop-right-menu" style={{
         display: 'flex',
-        gap: 24,
+        gap: 20,
       }}>
         {rightMenu.map((item, index) => (
           <button
@@ -236,14 +255,14 @@ const Header = ({ onNavigate }) => {
             onClick={() => handleNavigate(item)}
             style={{
               position: 'relative',
-              background: item.type === 'button' ? '#f9b233' : 'transparent',
-              color: item.type === 'button' ? '#222' : (activeItem === item.label ? '#000' : '#666'),
-              fontWeight: 500,
-              fontSize: 16,
+              background: item.type === 'button' ? '#ffcc30' : 'transparent',
+              color: item.type === 'button' ? '#111827' : (activeItem === item.label ? '#111827' : '#111827'),
+              fontWeight: item.type === 'button' ? 550 : 400,
+              fontSize: 15,
               border: 'none',
               borderRadius: item.type === 'button' ? 8 : 0,
-              padding: item.type === 'button' ? '8px 20px' : '0',
-              marginRight: 0,
+              padding: item.type === 'button' ? '12px 12px' : '0',
+              marginRight: 5,
               cursor: 'pointer',
               fontFamily: 'Inter, sans-serif',
               outline: 'none',
@@ -251,17 +270,18 @@ const Header = ({ onNavigate }) => {
           >
             <span>{item.label}</span>
             {item.icon && (
-              <span style={{ marginLeft: 4, fontSize: 14, color: '#888' }}>▼</span>
+              <span style={{ marginTop:-6, marginLeft: 6, fontSize: 14, color: '#111827', verticalAlign: 'top' }}>⌄</span>
             )}
-            {activeItem === item.label && item.type !== 'button' && (
+            {activeItem === item.label && (
               <span style={{
                 position: 'absolute',
-                left: 0,
-                right: 0,
-                bottom: -4,
-                height: 4,
-                background: '#f9b233',
-                borderRadius: 4,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                top: -8,
+                width: '100%',
+                height: 2,
+                background: '#6b7280',
+                borderRadius: 1,
                 display: 'block',
               }} />
             )}
@@ -294,13 +314,13 @@ const Header = ({ onNavigate }) => {
               key={index}
               onClick={() => handleNavigate(item)}
               style={{
-                background: item.type === 'button' ? '#f9b233' : 'transparent',
-                color: item.type === 'button' ? '#222' : '#666',
-                fontWeight: 500,
-                fontSize: 16,
+                background: item.type === 'button' ? '#ffcc30' : 'transparent',
+                color: item.type === 'button' ? '#111827' : '#6b7280',
+                fontWeight: item.type === 'button' ? 600 : 500,
+                fontSize: 18,
                 border: 'none',
                 borderRadius: item.type === 'button' ? 8 : 0,
-                padding: item.type === 'button' ? '12px 20px' : '12px 0',
+                padding: item.type === 'button' ? '12px 24px' : '12px 0',
                 cursor: 'pointer',
                 fontFamily: 'Inter, sans-serif',
                 outline: 'none',
@@ -313,7 +333,7 @@ const Header = ({ onNavigate }) => {
             >
               <span>{item.label}</span>
               {item.icon && (
-                <span style={{ fontSize: 14, color: '#888' }}>▼</span>
+                <span style={{ fontSize: 14, color: '#6b7280' }}></span>
               )}
             </button>
           ))}
@@ -413,4 +433,4 @@ const WebLanding = () => {
   );
 };
 
-export default WebLanding; 
+export default WebLanding;
