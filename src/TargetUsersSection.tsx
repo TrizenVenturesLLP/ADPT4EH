@@ -53,12 +53,12 @@ const ScrollingGrid = ({ height, isMobile }) => {
               style={{
                 display: 'flex',
                 alignItems: 'flex-start',
-                gap: isMobile ? 12 : 20,
+                gap: isMobile ? 10 : 16,
                 background: '#fff',
-                borderRadius: isMobile ? 12 : 18,
-                padding: isMobile ? 12 : 18,
+                borderRadius: isMobile ? 10 : 16,
+                padding: isMobile ? 10 : 16,
                 boxShadow: '0 4px 24px #0001',
-                minHeight: isMobile ? 80 : 104,
+                minHeight: isMobile ? 70 : 90,
                 width: '100%',
                 border: '1px solid #eaf1fb',
                 marginBottom: isMobile ? 4 : 6,
@@ -70,19 +70,19 @@ const ScrollingGrid = ({ height, isMobile }) => {
                 src={task.image}
                 alt={task.title}
                 style={{
-                  width: isMobile ? 60 : 120,
-                  height: isMobile ? 60 : 120,
+                  width: isMobile ? 50 : 100,
+                  height: isMobile ? 50 : 100,
                   objectFit: 'cover',
                   background: '#f3f4f6',
-                  borderRadius: isMobile ? 8 : 12,
+                  borderRadius: isMobile ? 8 : 10,
                   flexShrink: 0,
                   border: '1px solid #eaf1fb',
                 }}
               />
               <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', flex: 1 }}>
                 <div style={{ 
-                  fontWeight: 800, 
-                  fontSize: isMobile ? 14 : 18, 
+                  fontWeight: 700, 
+                  fontSize: isMobile ? 12 : 16, 
                   color: '#1a237e', 
                   lineHeight: 1.2, 
                   marginBottom: 2, 
@@ -93,7 +93,7 @@ const ScrollingGrid = ({ height, isMobile }) => {
                   {task.title}
                 </div>
                 <div style={{ 
-                  fontSize: isMobile ? 12 : 15, 
+                  fontSize: isMobile ? 11 : 13, 
                   color: '#374151', 
                   lineHeight: 1.3, 
                   fontFamily: 'Inter, sans-serif',
@@ -218,6 +218,7 @@ const TargetUsersSection = () => {
           flex: 1.2, 
           display: 'flex', 
           justifyContent: 'center', 
+          fontSize:6,
           alignItems: 'flex-start', 
           width: '100%', 
           height: gridHeight,
