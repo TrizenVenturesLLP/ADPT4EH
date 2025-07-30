@@ -244,7 +244,7 @@ const TargetUsersSection = () => {
         {`
           @media (max-width: 768px) {
             section {
-              padding: 0px 20px 0px 20px !important;
+              padding: 40px 20px 40px 20px !important;
             }
             .target-users-container {
               flex-direction: column !important;
@@ -298,7 +298,7 @@ const TargetUsersSection = () => {
           
           @media (min-width: 769px) and (max-width: 1200px) {
             section {
-              padding: 0px 40px 0px 60px !important;
+              padding: 48px 40px 48px 60px !important;
             }
             .target-users-container {
               gap: 60px !important;
@@ -317,7 +317,7 @@ const TargetUsersSection = () => {
           
           @media (max-width: 480px) {
             section {
-              padding: 0px 16px 0px 16px !important;
+              padding: 32px 16px 32px 16px !important;
             }
             .target-users-title {
               font-size: 24px !important;
@@ -341,7 +341,7 @@ const TargetUsersSection = () => {
           
           @media (max-width: 360px) {
             section {
-              padding: 0px 12px 0px 12px !important;
+              padding: 24px 12px 24px 12px !important;
             }
             .target-users-title {
               font-size: 22px !important;
