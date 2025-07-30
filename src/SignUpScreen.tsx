@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform, ScrollView, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform, ScrollView, Image, Dimensions } from 'react-native';
 import { useNavigation } from './SimpleNavigation';
 
 const PRIMARY_YELLOW = '#f9b233';
@@ -53,6 +53,25 @@ const SignUpScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
+
+  // Check if we're on mobile web view
+  useEffect(() => {
+    const checkScreenSize = () => {
+      if (Platform.OS === 'web') {
+        const { width } = Dimensions.get('window');
+        setIsMobileView(width <= 768);
+      } else {
+        setIsMobileView(true); // Always frameless on native mobile
+      }
+    };
+
+    checkScreenSize();
+    if (Platform.OS === 'web') {
+      const subscription = Dimensions.addEventListener('change', checkScreenSize);
+      return () => subscription?.remove();
+    }
+  }, []);
 
   const handleSignUp = () => {
     if (!fullName || !email || !password || !confirmPassword) {
@@ -71,8 +90,8 @@ const SignUpScreen = () => {
     }, 1000);
   };
 
-  // Android-specific layout matching the reference UI
-  if (Platform.OS !== 'web') {
+  // Frameless layout for mobile (Android, iOS, and mobile web)
+  if (isMobileView) {
     return (
       <View style={styles.androidContainer}>
         {/* Back Button */}
@@ -221,13 +240,9 @@ const SignUpScreen = () => {
     );
   }
 
-  // Web layout (keeping existing form frame)
+  // Desktop web layout (with form frame)
   return (
     <View style={styles.container}>
-      {/* Back Button */}
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={{ fontSize: 22, color: DARK }}>←</Text>
-      </TouchableOpacity>
       <View style={styles.card}>
         <Text style={styles.heading}>Create Account</Text>
         <Text style={styles.subtext}>Sign up to get started</Text>

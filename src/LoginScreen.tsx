@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform, Image, Dimensions } from 'react-native';
 import { useNavigation } from './SimpleNavigation';
 
 const PRIMARY_YELLOW = '#f9b233';
@@ -48,23 +48,68 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
+
+  // Debug navigation object
+  console.log('LoginScreen - Navigation object:', navigation);
+  console.log('LoginScreen - Current route:', navigation.currentRoute);
+
+  // Check if we're on mobile web view
+  useEffect(() => {
+    const checkScreenSize = () => {
+      if (Platform.OS === 'web') {
+        const { width } = Dimensions.get('window');
+        const isMobile = width <= 768;
+        console.log('Screen size check - Width:', width, 'isMobile:', isMobile);
+        setIsMobileView(isMobile);
+      } else {
+        console.log('Native platform, setting isMobileView to true');
+        setIsMobileView(true); // Always frameless on native mobile
+      }
+    };
+
+    checkScreenSize();
+    if (Platform.OS === 'web') {
+      const subscription = Dimensions.addEventListener('change', checkScreenSize);
+      return () => subscription?.remove();
+    }
+  }, []);
 
   const handleLogin = () => {
+    console.log('Login attempt - Platform:', Platform.OS, 'isMobileView:', isMobileView);
+    console.log('Email:', email, 'Password length:', password.length);
+    
     if (!email || !password) {
-      Alert.alert('Error', 'Please enter email and password.');
+      console.log('Validation failed - missing email or password');
+      if (Platform.OS === 'web') {
+        alert('Please enter email and password.');
+      } else {
+        Alert.alert('Error', 'Please enter email and password.');
+      }
       return;
     }
+    
     setLoading(true);
+    console.log('Starting login process...');
+    
     setTimeout(() => {
       setLoading(false);
-      Alert.alert('Success', 'Logged in!', [
-        { text: 'OK', onPress: () => navigation.goBack() }
-      ]);
+      console.log('Login completed, navigating to PosterHome...');
+      
+      if (Platform.OS === 'web') {
+        alert('Logged in successfully!');
+        console.log('Calling navigation.navigate("PosterHome")');
+        navigation.navigate('PosterHome');
+      } else {
+        Alert.alert('Success', 'Logged in!', [
+          { text: 'OK', onPress: () => navigation.navigate('PosterHome') }
+        ]);
+      }
     }, 1000);
   };
 
-  // Android-specific layout matching the reference UI
-  if (Platform.OS !== 'web') {
+  // Frameless layout for mobile (Android, iOS, and mobile web)
+  if (isMobileView) {
     return (
       <View style={styles.androidContainer}>
         {/* Back Button */}
@@ -119,16 +164,29 @@ const LoginScreen = () => {
           <Text style={styles.androidForgotText}>Forgot Password?</Text>
         </TouchableOpacity>
 
-        {/* Login Button */}
-        <TouchableOpacity
-          style={styles.androidLoginButton}
-          onPress={handleLogin}
-          disabled={loading}
-        >
-          <Text style={styles.androidLoginButtonText}>
-            {loading ? 'Logging in...' : 'Login'}
-          </Text>
-        </TouchableOpacity>
+                 {/* Login Button */}
+         <TouchableOpacity
+           style={styles.androidLoginButton}
+           onPress={handleLogin}
+           disabled={loading}
+         >
+           <Text style={styles.androidLoginButtonText}>
+             {loading ? 'Logging in...' : 'Login'}
+           </Text>
+         </TouchableOpacity>
+
+         {/* Test Navigation Button (for debugging) */}
+         {/* <TouchableOpacity
+           style={[styles.androidLoginButton, { marginTop: 10, backgroundColor: '#007AFF' }]}
+           onPress={() => {
+             console.log('Test navigation button pressed');
+             navigation.navigate('PosterHome');
+           }}
+         >
+           <Text style={styles.androidLoginButtonText}>
+             Test Navigation to PosterHome
+           </Text>
+         </TouchableOpacity> */}
 
         {/* Social Login */}
         <View style={styles.androidSocialSection}>
@@ -156,13 +214,9 @@ const LoginScreen = () => {
     );
   }
 
-  // Web layout (keeping existing form frame)
+  // Desktop web layout (with form frame)
   return (
     <View style={styles.container}>
-      {/* Back Button */}
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={{ fontSize: 22, color: DARK }}>{Platform.OS === 'web' ? '←' : '‹'}</Text>
-      </TouchableOpacity>
       <View style={styles.card}>
         <Text style={styles.heading}>Sign In</Text>
         <Text style={styles.subtext}>Login to your account</Text>

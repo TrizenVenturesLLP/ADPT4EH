@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Platform, Dimensions } from 'react-native';
 import { useNavigation } from './SimpleNavigation';
 
 const PRIMARY_YELLOW = '#f9b233';
@@ -17,7 +17,26 @@ const OTPVerificationScreen: React.FC = () => {
   const phone = navigation.params?.phone || '';
   const [otp, setOtp] = useState(['', '', '', '']);
   const [timer, setTimer] = useState(30);
+  const [isMobileView, setIsMobileView] = useState(false);
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
+
+  // Check if we're on mobile web view
+  useEffect(() => {
+    const checkScreenSize = () => {
+      if (Platform.OS === 'web') {
+        const { width } = Dimensions.get('window');
+        setIsMobileView(width <= 768);
+      } else {
+        setIsMobileView(true); // Always frameless on native mobile
+      }
+    };
+
+    checkScreenSize();
+    if (Platform.OS === 'web') {
+      const subscription = Dimensions.addEventListener('change', checkScreenSize);
+      return () => subscription?.remove();
+    }
+  }, []);
 
   useEffect(() => {
     if (timer > 0) {
@@ -58,8 +77,8 @@ const OTPVerificationScreen: React.FC = () => {
     }
   };
 
-  // Android-specific layout matching other screens
-  if (Platform.OS !== 'web') {
+  // Frameless layout for mobile (Android, iOS, and mobile web)
+  if (isMobileView) {
     return (
       <View style={styles.androidContainer}>
         {/* Back Button */}
@@ -113,13 +132,10 @@ const OTPVerificationScreen: React.FC = () => {
     );
   }
 
-  // Web layout (keeping existing card design)
+  // Desktop web layout (with form frame)
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
       <View style={styles.container}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Text style={{ fontSize: 18, color: DARK }}>{'←'} Back</Text>
-        </TouchableOpacity>
         <View style={styles.card}>
           <Text style={styles.heading}>Verification Code</Text>
           <Text style={styles.subtext}>We have sent a verification code to</Text>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Platform, Dimensions } from 'react-native';
 import { useNavigation } from './SimpleNavigation';
 
 const PRIMARY_YELLOW = '#f9b233';
@@ -8,9 +8,28 @@ const GRAY = '#888';
 
 const ChooseLocationMethodScreen = () => {
   const navigation = useNavigation();
+  const [isMobileView, setIsMobileView] = useState(false);
 
-  // Android-specific layout matching the reference UI
-  if (Platform.OS !== 'web') {
+  // Check if we're on mobile web view
+  useEffect(() => {
+    const checkScreenSize = () => {
+      if (Platform.OS === 'web') {
+        const { width } = Dimensions.get('window');
+        setIsMobileView(width <= 768);
+      } else {
+        setIsMobileView(true); // Always frameless on native mobile
+      }
+    };
+
+    checkScreenSize();
+    if (Platform.OS === 'web') {
+      const subscription = Dimensions.addEventListener('change', checkScreenSize);
+      return () => subscription?.remove();
+    }
+  }, []);
+
+  // Frameless layout for mobile (Android, iOS, and mobile web)
+  if (isMobileView) {
     return (
       <View style={styles.androidContainer}>
         {/* Back Button */}
@@ -49,19 +68,16 @@ const ChooseLocationMethodScreen = () => {
     );
   }
 
-  // Web layout (keeping existing design)
+  // Desktop web layout (with form frame)
   return (
     <View style={styles.container}>
-      {/* Back Button */}
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={{ fontSize: 22, color: DARK }}>{Platform.OS === 'web' ? '←' : '‹'}</Text>
-      </TouchableOpacity>
       <View style={styles.content}>
         {/* Pin Icon */}
         <View style={styles.pinContainer}>
           <View style={styles.pinOuter}>
             <View style={styles.pinInner} />
           </View>
+          <View style={styles.pinLine} />
           <View style={styles.pinShadow} />
         </View>
         <Text style={styles.question}>Where do you want your services?</Text>
@@ -119,34 +135,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop: 40,
+    flex: 1,
+    flexDirection: 'column',
+    paddingTop: 60, // Add space to center content better
   },
   pinContainer: {
     alignItems: 'center',
     marginBottom: 32,
   },
   pinOuter: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     backgroundColor: PRIMARY_YELLOW,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 4,
   },
   pinInner: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: '#fff',
-    borderWidth: 2,
-    borderColor: PRIMARY_YELLOW,
+  },
+  pinLine: {
+    width: 2,
+    height: 56,
+    backgroundColor: DARK,
+    marginBottom: -32,
   },
   pinShadow: {
-    width: 52,
-    height: 22,
-    borderRadius: 36,
-    backgroundColor: '#f9b23333',
-    marginTop: -25,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#f9b23340',
   },
   question: {
     fontSize: 16,
@@ -190,6 +212,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 24,
+    paddingTop: 80, // Add space for back button
   },
   androidBackButton: {
     position: 'absolute',

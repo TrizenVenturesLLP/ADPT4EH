@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Platform } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Platform, Dimensions } from 'react-native';
 import { useNavigation } from './SimpleNavigation';
 
 const PRIMARY_YELLOW = '#f9b233';
@@ -11,7 +11,26 @@ const SearchLocationScreen = () => {
   const navigation = useNavigation();
   const [searchText, setSearchText] = useState('Gachibowli');
   const [isSearchFocused, setIsSearchFocused] = useState(true);
+  const [isMobileView, setIsMobileView] = useState(false);
   const searchInputRef = useRef<TextInput>(null);
+
+  // Check if we're on mobile web view
+  useEffect(() => {
+    const checkScreenSize = () => {
+      if (Platform.OS === 'web') {
+        const { width } = Dimensions.get('window');
+        setIsMobileView(width <= 768);
+      } else {
+        setIsMobileView(true); // Always frameless on native mobile
+      }
+    };
+
+    checkScreenSize();
+    if (Platform.OS === 'web') {
+      const subscription = Dimensions.addEventListener('change', checkScreenSize);
+      return () => subscription?.remove();
+    }
+  }, []);
 
   // Mock search results - in real app, these would come from Google Places API
   const searchResults = [
@@ -82,18 +101,23 @@ const SearchLocationScreen = () => {
     navigation.navigate('LocationConfirmation', { addressDetails });
   };
 
-  if (Platform.select({ web: true, default: false })) {
+  // Frameless layout for mobile (Android, iOS, and mobile web)
+  if (isMobileView) {
     return (
-      <div style={{ minHeight: '100vh', background: '#fff' }}>
-        <View style={styles.container}>
+      <View style={styles.androidContainer}>
+        {/* Back Button */}
+        <TouchableOpacity style={styles.androidBackButton} onPress={handleBackPress}>
+          <Text style={styles.backArrow}>‹</Text>
+          <Text style={styles.backText}>Back</Text>
+        </TouchableOpacity>
+
+        {/* Content */}
+        <View style={styles.androidContent}>
           {/* Search Header */}
-          <View style={styles.searchHeader}>
-            <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-              <Text style={styles.backIcon}>←</Text>
-            </TouchableOpacity>
+          <View style={styles.androidSearchHeader}>
             <TextInput
               ref={searchInputRef}
-              style={styles.searchInput}
+              style={styles.androidSearchInput}
               value={searchText}
               onChangeText={setSearchText}
               placeholder="Search location..."
@@ -102,6 +126,61 @@ const SearchLocationScreen = () => {
               onBlur={() => setIsSearchFocused(false)}
             />
           </View>
+
+          {/* Use Current Location Option */}
+          <TouchableOpacity style={styles.androidCurrentLocationRow} onPress={handleUseCurrentLocation}>
+            <View style={styles.androidCurrentLocationIcon}>
+              <Text style={styles.targetIcon}>🎯</Text>
+            </View>
+            <Text style={styles.androidCurrentLocationText}>Use current location</Text>
+          </TouchableOpacity>
+
+          {/* Search Results */}
+          <ScrollView style={styles.androidResultsContainer} showsVerticalScrollIndicator={false}>
+            {searchResults.map((result) => (
+              <TouchableOpacity
+                key={result.id}
+                style={styles.androidResultRow}
+                onPress={() => handleLocationSelect(result)}
+              >
+                <View style={styles.androidLocationIcon}>
+                  <Text style={styles.pinIcon}>📍</Text>
+                </View>
+                <View style={styles.androidResultTextContainer}>
+                  <Text style={styles.androidResultName}>{result.name}</Text>
+                  <Text style={styles.androidResultAddress}>{result.address}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+
+          {/* Powered by Google */}
+          <View style={styles.androidPoweredByContainer}>
+            <Text style={styles.poweredByText}>powered by </Text>
+            <Text style={styles.googleText}>Google</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  // Desktop web layout (without back button)
+  return (
+    <div style={{ minHeight: '100vh', background: '#fff' }}>
+      <View style={styles.container}>
+        {/* Search Header */}
+        <View style={styles.searchHeader}>
+          <TextInput
+            ref={searchInputRef}
+            style={styles.searchInput}
+            value={searchText}
+            onChangeText={setSearchText}
+            placeholder="Search location..."
+            placeholderTextColor={GRAY}
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={() => setIsSearchFocused(false)}
+          />
+        </View>
 
           {/* Use Current Location Option */}
           <TouchableOpacity style={styles.currentLocationRow} onPress={handleUseCurrentLocation}>
@@ -138,61 +217,6 @@ const SearchLocationScreen = () => {
         </View>
       </div>
     );
-  }
-
-  return (
-    <View style={styles.container}>
-      {/* Search Header */}
-      <View style={styles.searchHeader}>
-        <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-          <Text style={styles.backIcon}>←</Text>
-        </TouchableOpacity>
-        <TextInput
-          ref={searchInputRef}
-          style={styles.searchInput}
-          value={searchText}
-          onChangeText={setSearchText}
-          placeholder="Search location..."
-          placeholderTextColor={GRAY}
-          onFocus={() => setIsSearchFocused(true)}
-          onBlur={() => setIsSearchFocused(false)}
-        />
-      </View>
-
-      {/* Use Current Location Option */}
-      <TouchableOpacity style={styles.currentLocationRow} onPress={handleUseCurrentLocation}>
-        <View style={styles.currentLocationIcon}>
-          <Text style={styles.targetIcon}>🎯</Text>
-        </View>
-        <Text style={styles.currentLocationText}>Use current location</Text>
-      </TouchableOpacity>
-
-      {/* Search Results */}
-      <ScrollView style={styles.resultsContainer} showsVerticalScrollIndicator={false}>
-        {searchResults.map((result) => (
-          <TouchableOpacity
-            key={result.id}
-            style={styles.resultRow}
-            onPress={() => handleLocationSelect(result)}
-          >
-            <View style={styles.locationIcon}>
-              <Text style={styles.pinIcon}>📍</Text>
-            </View>
-            <View style={styles.resultTextContainer}>
-              <Text style={styles.resultName}>{result.name}</Text>
-              <Text style={styles.resultAddress}>{result.address}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-
-      {/* Powered by Google */}
-      <View style={styles.poweredByContainer}>
-        <Text style={styles.poweredByText}>powered by </Text>
-        <Text style={styles.googleText}>Google</Text>
-      </View>
-    </View>
-  );
 };
 
 const styles = StyleSheet.create({
@@ -301,6 +325,106 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#4285F4',
     fontWeight: 'bold',
+  },
+
+  // Mobile/Android styles
+  androidContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingTop: 80,
+  },
+  androidBackButton: {
+    position: 'absolute',
+    top: 40,
+    left: 16,
+    zIndex: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  backArrow: {
+    fontSize: 22,
+    color: DARK,
+    marginRight: 8,
+  },
+  backText: {
+    fontSize: 16,
+    color: DARK,
+    fontWeight: 'bold',
+  },
+  androidContent: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  androidSearchHeader: {
+    marginBottom: 16,
+  },
+  androidSearchInput: {
+    height: 48,
+    borderWidth: 1,
+    borderColor: PRIMARY_YELLOW,
+    borderRadius: 24,
+    paddingHorizontal: 20,
+    fontSize: 16,
+    color: DARK,
+    backgroundColor: '#fff',
+  },
+  androidCurrentLocationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: LIGHT_GRAY,
+  },
+  androidCurrentLocationIcon: {
+    width: 24,
+    height: 24,
+    marginRight: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  androidCurrentLocationText: {
+    fontSize: 16,
+    color: PRIMARY_YELLOW,
+    fontWeight: '500',
+  },
+  androidResultsContainer: {
+    flex: 1,
+  },
+  androidResultRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: LIGHT_GRAY,
+  },
+  androidLocationIcon: {
+    width: 24,
+    height: 24,
+    marginRight: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  androidResultTextContainer: {
+    flex: 1,
+  },
+  androidResultName: {
+    fontSize: 16,
+    color: DARK,
+    fontWeight: '500',
+    marginBottom: 2,
+  },
+  androidResultAddress: {
+    fontSize: 14,
+    color: GRAY,
+    lineHeight: 18,
+  },
+  androidPoweredByContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 16,
+    borderTopWidth: 1,
+    borderTopColor: LIGHT_GRAY,
   },
 });
 
