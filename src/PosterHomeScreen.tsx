@@ -10,6 +10,7 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
+import Footer from './Footer';
 
 const PosterHomeScreen: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -291,143 +292,148 @@ const PosterHomeScreen: React.FC = () => {
     );
   }
 
-  // Desktop web layout (existing implementation)
+  // Desktop web layout (new implementation based on Urban Company reference)
   return (
     <View style={styles.container}>
       {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerTop}>
-          <View style={styles.locationContainer}>
-            <Text style={styles.locationText}>Hyderabad Decan Railway Station</Text>
-            <Text style={styles.locationSubtext}>Red Hills-Malakpet-Hyderaba...</Text>
-            <Text style={styles.locationArrow}>▼</Text>
+      <View style={styles.desktopHeader}>
+        <View style={styles.desktopHeaderContent}>
+          {/* Left: Logo */}
+          <View style={styles.desktopLogoSection}>
+            <Image
+              source={require('../assets/images/logo.png')}
+              style={styles.desktopLogoImage}
+              resizeMode="contain"
+            />
+            <Text style={styles.desktopLogoText}>Extrahand</Text>
           </View>
-          <TouchableOpacity style={styles.cartButton}>
-            <Text style={styles.cartIcon}>🛒</Text>
-          </TouchableOpacity>
-        </View>
-        
-        {/* Search Bar */}
-        <View style={styles.searchContainer}>
-          <Text style={styles.searchIcon}>🔍</Text>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search for"
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            placeholderTextColor="#999"
-          />
-        </View>
-      </View>
-
-      {/* Scrollable Content */}
-      <ScrollView 
-        style={styles.scrollableContent} 
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContentContainer}
-      >
-        {/* Service Categories Grid */}
-        <View style={styles.categoriesGrid}>
-          {serviceCategories.map((category) => (
-            <TouchableOpacity key={category.id} style={styles.categoryCard}>
-              <View style={[styles.categoryIcon, { backgroundColor: category.color }]}>
-                <Image source={category.image} style={styles.categoryImage} />
-              </View>
-              <Text style={styles.categoryTitle}>{category.title}</Text>
+          
+          {/* Center: Navigation Menu */}
+          <View style={styles.desktopCenterMenu}>
+            <TouchableOpacity style={styles.desktopMenuButton}>
+              <Text style={styles.desktopMenuButtonText}>Post a Task</Text>
             </TouchableOpacity>
-          ))}
+            <TouchableOpacity style={styles.desktopMenuLink}>
+              <Text style={styles.desktopMenuLinkText}>Browse Tasks</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.desktopMenuLink}>
+              <Text style={styles.desktopMenuLinkText}>How it works</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.desktopMenuLink}>
+              <Text style={styles.desktopMenuLinkText}>Benefits</Text>
+            </TouchableOpacity>
+          </View>
+          
+          {/* Right: Profile Icon */}
+          <View style={styles.desktopRightMenu}>
+            <TouchableOpacity style={styles.desktopProfileButton}>
+              <Text style={styles.desktopProfileIcon}>👤</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+      </View>
 
-        {/* Custom Task Button */}
-        <View style={styles.customTaskContainer}>
-          <TouchableOpacity style={styles.customTaskButton}>
-            <Text style={styles.customTaskText}>Custom Task</Text>
-            <Text style={styles.customTaskIcon}>📅</Text>
-          </TouchableOpacity>
-        </View>
+             {/* Main Content */}
+       <View style={styles.desktopMainContent}>
+                   {/* Left Side - Categories */}
+          <View style={styles.desktopLeftSection}>
+            <View style={styles.desktopHeroSection}>
+              <Text style={styles.desktopHeroTitle}>Services at your fingertips</Text>
+            </View>
+            
+            {/* Categories Card */}
+            <View style={styles.desktopCategoriesCard}>
+              <Text style={styles.desktopHeroSubtitle}>What are you looking for?</Text>
+              
+              <View style={styles.desktopCategoriesGrid}>
+                {serviceCategories.map((category) => (
+                  <TouchableOpacity key={category.id} style={styles.desktopCategoryCard}>
+                    <View style={[styles.desktopCategoryIcon, { backgroundColor: category.color }]}>
+                      <Image source={category.image} style={styles.desktopCategoryImage} />
+                    </View>
+                    <Text style={styles.desktopCategoryTitle}>{category.title}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
 
-        {/* Horizontal Scrollable Banners */}
-        <View style={styles.bannerSection}>
-          <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.bannerScrollContainer}
-          >
-            {bannerImages.map((banner, index) => (
-              <TouchableOpacity key={index} style={styles.bannerCard}>
-                <Image source={banner} style={styles.bannerImage} />
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-
-        {/* Most Booked Services Section */}
-        <View style={styles.mostBookedSection}>
-          <Text style={styles.mostBookedTitle}>Most Booked Services</Text>
-          <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.mostBookedScrollContainer}
-          >
-            {mostBookedServices.map((service) => (
-              <TouchableOpacity key={service.id} style={styles.serviceCard}>
-                <Image source={service.image} style={styles.serviceImage} />
-                <View style={styles.serviceContent}>
-                  <Text style={styles.serviceTitle}>Title: {service.title}</Text>
-                  <View style={styles.serviceRating}>
-                    <Text style={styles.starIcon}>⭐</Text>
-                    <Text style={styles.ratingText}>{service.rating} ({service.reviews})</Text>
-                  </View>
-                  <Text style={styles.servicePrice}>{service.price}</Text>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-
-        {/* Refer Section */}
-        <View style={styles.referSection}>
-          <View style={styles.referCard}>
-            <View style={styles.referContent}>
-              <Text style={styles.referTitle}>Refer and get</Text>
-              <Text style={styles.referSubtitle}>free services</Text>
-              <Text style={styles.referDescription}>Invite and get ₹ 100*</Text>
-              <TouchableOpacity style={styles.referButton}>
-                <Text style={styles.referButtonText}>Book now</Text>
+            {/* Custom Task Button */}
+            <View style={styles.desktopCustomTaskContainer}>
+              <TouchableOpacity style={styles.desktopCustomTaskButton}>
+                <Text style={styles.desktopCustomTaskText}>Custom Task</Text>
+                <Text style={styles.desktopCustomTaskIcon}>📅</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.referImageContainer}>
-              <Image source={require('../assets/images/refer.png')} style={styles.referImage} />
+          </View>
+          
+          {/* Right Side - Single Image */}
+          <View style={styles.desktopRightSection}>
+            <View style={styles.desktopSingleImageCard}>
+              <Image source={require('../assets/images/homeimg.png')} style={styles.desktopSingleImage} />
             </View>
           </View>
         </View>
-      </ScrollView>
 
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={[styles.navItem, styles.navItemActive]}>
-          <Text style={styles.navIcon}>🏠</Text>
-          <Text style={styles.navText}>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>📋</Text>
-          <Text style={styles.navText}>Tasks</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>➕</Text>
-          <Text style={styles.navText}>Post / Discover</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>💬</Text>
-          <Text style={styles.navText}>Chat</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>👤</Text>
-          <Text style={styles.navText}>Account</Text>
-        </TouchableOpacity>
+       {/* Horizontal Scrollable Banners */}
+       <View style={styles.desktopFullWidthBannerSection}>
+         <ScrollView 
+           horizontal 
+           showsHorizontalScrollIndicator={false}
+           contentContainerStyle={styles.desktopBannerScrollContainer}
+         >
+           {bannerImages.map((banner, index) => (
+             <TouchableOpacity key={index} style={styles.desktopBannerCard}>
+               <Image source={banner} style={styles.desktopBannerImage} />
+             </TouchableOpacity>
+           ))}
+         </ScrollView>
+       </View>
+
+       {/* Most Booked Services Section */}
+       <View style={styles.desktopFullWidthMostBookedSection}>
+         <Text style={styles.desktopMostBookedTitle}>Most Booked Services</Text>
+         <ScrollView 
+           horizontal 
+           showsHorizontalScrollIndicator={false}
+           contentContainerStyle={styles.desktopMostBookedScrollContainer}
+         >
+           {mostBookedServices.map((service) => (
+             <TouchableOpacity key={service.id} style={styles.desktopServiceCard}>
+               <Image source={service.image} style={styles.desktopServiceCardImage} />
+               <View style={styles.desktopServiceContent}>
+                 <Text style={styles.desktopServiceTitle}>{service.title}</Text>
+                 <View style={styles.desktopServiceRating}>
+                   <Text style={styles.desktopStarIcon}>⭐</Text>
+                   <Text style={styles.desktopRatingText}>{service.rating} ({service.reviews})</Text>
+                 </View>
+                 <Text style={styles.desktopServicePrice}>{service.price}</Text>
+               </View>
+             </TouchableOpacity>
+           ))}
+         </ScrollView>
+       </View>
+
+               {/* Refer Section */}
+        <View style={styles.desktopFullWidthReferSection}>
+          <View style={styles.desktopReferCard}>
+            <View style={styles.desktopReferContent}>
+              <Text style={styles.desktopReferTitle}>Refer and get</Text>
+              <Text style={styles.desktopReferSubtitle}>free services</Text>
+              <Text style={styles.desktopReferDescription}>Invite and get ₹ 100*</Text>
+              <TouchableOpacity style={styles.desktopReferButton}>
+                <Text style={styles.desktopReferButtonText}>Book now</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.desktopReferImageContainer}>
+              <Image source={require('../assets/images/refer.png')} style={styles.desktopReferImage} />
+            </View>
+          </View>
+        </View>
+
+        {/* Footer */}
+        <Footer />
       </View>
-    </View>
-  );
+    );
 };
 
 const styles = StyleSheet.create({
@@ -1030,6 +1036,393 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'contain',
+  },
+
+  // New styles for desktop layout
+  desktopHeader: {
+    backgroundColor: '#fff',
+    paddingTop: Platform.OS === 'ios' ? 50 : 20,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  desktopHeaderContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  desktopLogoSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  desktopLogoImage: {
+    width: 32,
+    height: 32,
+    marginRight: 8,
+  },
+  desktopLogoText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#374151',
+  },
+  desktopCenterMenu: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 24,
+  },
+  desktopMenuButton: {
+    backgroundColor: '#ffcc30',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  desktopMenuButtonText: {
+    color: '#111827',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  desktopMenuLink: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  desktopMenuLinkText: {
+    color: '#6b7280',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  desktopRightMenu: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
+  desktopAuthButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  desktopAuthButtonText: {
+    color: '#6b7280',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  desktopTaskerButton: {
+    backgroundColor: '#ffcc30',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  desktopTaskerButtonText: {
+    color: '#111827',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  desktopProfileButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#f0f0f0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+  },
+  desktopProfileIcon: {
+    fontSize: 20,
+    color: '#666',
+  },
+
+  desktopMainContent: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  desktopLeftSection: {
+    flex: 1,
+    marginRight: 20,
+  },
+  desktopHeroSection: {
+    marginBottom: 20,
+  },
+  desktopHeroTitle: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 8,
+  },
+  desktopHeroSubtitle: {
+    fontSize: 18,
+    color: '#666',
+    marginBottom: 20,
+  },
+  desktopCategoriesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  desktopCategoryCard: {
+    width: '31%', // 3 columns with better spacing
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  desktopCategoryIcon: {
+    width: 90,
+    height: 90,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  desktopCategoryImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  desktopCategoryTitle: {
+    fontSize: 11,
+    color: '#333',
+    textAlign: 'center',
+    fontWeight: '500',
+    lineHeight: 14,
+    marginTop: 8,
+    paddingHorizontal: 4,
+  },
+  desktopRightSection: {
+    width: 700,
+  },
+  desktopSingleImageCard: {
+    width: '100%',
+    height: 700,
+    borderRadius: 12,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  desktopSingleImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  desktopImageGrid: {
+    marginBottom: 20,
+  },
+  desktopImageRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  desktopImageCard: {
+    width: '48%', // Adjust as needed for 2 columns
+    height: 120,
+    borderRadius: 12,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  desktopServiceImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  desktopImageOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 10,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+  },
+  desktopImageTitle: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  desktopCustomTaskContainer: {
+    marginBottom: 20,
+    paddingHorizontal: 0,
+    // marginTop:10
+  },
+  desktopCustomTaskButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f0f0f0',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+  },
+  desktopCustomTaskText: {
+    fontSize: 16,
+    color: '#333',
+    fontWeight: '500',
+    marginRight: 8,
+  },
+  desktopCustomTaskIcon: {
+    fontSize: 16,
+  },
+  desktopBannerSection: {
+    marginBottom: 20,
+  },
+  desktopBannerScrollContainer: {
+    paddingHorizontal: 0,
+  },
+  desktopBannerCard: {
+    marginRight: 16,
+    borderRadius: 12,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  desktopBannerImage: {
+    width: 500,
+    height: 280,
+    borderRadius: 12,
+  },
+  desktopMostBookedSection: {
+    marginBottom: 20,
+  },
+  desktopMostBookedTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 16,
+    textAlign: 'left',
+    paddingHorizontal: 0,
+  },
+  desktopMostBookedScrollContainer: {
+    paddingHorizontal: 0,
+  },
+  desktopServiceCard: {
+    width: 320,
+    marginRight: 16,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  desktopServiceCardImage: {
+    width: '100%',
+    height: 180,
+    resizeMode: 'cover',
+  },
+  desktopServiceContent: {
+    padding: 16,
+  },
+  desktopServiceTitle: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#333',
+    marginBottom: 8,
+  },
+  desktopServiceRating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  desktopStarIcon: {
+    fontSize: 14,
+    marginRight: 4,
+  },
+  desktopRatingText: {
+    fontSize: 12,
+    color: '#666',
+  },
+  desktopServicePrice: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  desktopReferSection: {
+    marginBottom: 20,
+    paddingHorizontal: 0,
+  },
+  desktopReferCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+  },
+  desktopReferContent: {
+    flex: 1,
+    marginRight: 20,
+  },
+  desktopReferTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 4,
+  },
+  desktopReferSubtitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 8,
+  },
+  desktopReferDescription: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 16,
+  },
+  desktopReferButton: {
+    backgroundColor: '#000',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+    alignSelf: 'flex-start',
+  },
+  desktopReferButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  desktopReferImageContainer: {
+    width: 140,
+    height: 140,
+  },
+  desktopReferImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  desktopFullWidthCustomTaskContainer: {
+    marginBottom: 30,
+    paddingHorizontal: 20,
+    marginTop: 30,
+  },
+  desktopFullWidthBannerSection: {
+    marginBottom: 30,
+    paddingHorizontal: 20,
+  },
+  desktopFullWidthMostBookedSection: {
+    marginBottom: 30,
+    paddingHorizontal: 20,
+  },
+  desktopFullWidthReferSection: {
+    marginBottom: 30,
+    paddingHorizontal: 20,
+  },
+  desktopCategoriesCard: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+    marginBottom: 20,
   },
 });
 
