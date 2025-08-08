@@ -921,7 +921,7 @@ const styles = StyleSheet.create({
     backgroundColor: PRIMARY_YELLOW,
     paddingHorizontal: 30,
     paddingVertical: 12,
-    borderRadius: 25,
+    borderRadius: 8,
   },
   desktopTaskDetailsMakeOfferText: {
     color: '#000',
