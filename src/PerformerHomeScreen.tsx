@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Image, ScrollView, Platform, Dimensions } from 'react-native';
+import { useNavigation } from './SimpleNavigation';
 import Footer from './Footer';
 
 const PRIMARY_YELLOW = '#f9b233';
+const PRIMARY_BLUE = '#2563eb';
 const DARK = '#222';
+
+const categories = [
+  "Accountants", "Admin", "Alterations", "Appliances", "Assembly", "Auto Electricians", "Bakers", "Barbers", "Beauticians", "Bicycle Service", "Bricklaying", "Building & Construction", "Business", "Car Body Work", "Car Detailing", "Car Repair", "Car Service", "Carpentry", "Cat Care", "Catering", "Chef", "Cladding", "Cleaning", "Computers & IT", "Concreting", "Decking", "Delivery", "Design", "Dog Care", "Draftsman", "Driving", "Electricians", "Entertainment", "Events", "Fencing", "Flooring", "Florist", "Furniture Assembly", "Gardening", "Gate Installation", "Hairdressers", "Handyman", "Heating & Cooling", "Home", "Automation And Security", "Home Theatre", "Interior Designer", "Landscaping", "Laundry", "Lawn Care", "Lessons", "Locksmith", "Makeup Artist", "Marketing", "Mobile Mechanic", "Painting", "Paving", "Pet Care", "Photographers", "Plasterer", "Plumbing", "Pool Maintenance", "Removals", "Roofing", "Sharpening", "Staffing", "Tailors", "Tattoo Artists", "Tiling", "Tradesman", "Tutoring", "Wall Hanging & Mounting", "Wallpapering", "Waterproofing", "Web", "Wheel & Tyre Service", "Writing"
+];
 
 const dummyTasks = [
   {
@@ -89,7 +95,28 @@ const dummyTasks = [
 ];
 
 const PerformerHomeScreen = () => {
+  const navigation = useNavigation();
   const [isMobileView, setIsMobileView] = useState(false);
+  const [showCategories, setShowCategories] = useState(false);
+  const dropdownRef = useRef<any>(null);
+
+  // Handle category selection
+  const handleCategoryClick = (category: string) => {
+    console.log(`Selected category: ${category}`);
+    setShowCategories(false);
+    // Prevent default navigation behavior
+    return false;
+  };
+
+  // Handle task card click
+  const handleTaskClick = (taskId: number) => {
+    navigation.navigate('TaskDetails');
+  };
+
+  // Handle open button click
+  const handleOpenClick = (taskId: number) => {
+    navigation.navigate('TaskDetails');
+  };
 
   // Check if we're on mobile web view
   useEffect(() => {
@@ -109,6 +136,22 @@ const PerformerHomeScreen = () => {
     }
   }, []);
 
+  // Handle dropdown click outside
+  useEffect(() => {
+    if (!showCategories) return;
+    
+    const handleClickOutside = (event: any) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowCategories(false);
+      }
+    };
+
+    if (Platform.OS === 'web') {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [showCategories]);
+
   // Mobile layout (Android, iOS, and mobile web)
   if (isMobileView) {
     return (
@@ -121,6 +164,59 @@ const PerformerHomeScreen = () => {
           </View>
           <View style={styles.mobileLogoCircle}>
             <Image source={require('../assets/images/logo.png')} style={styles.mobileLogoImage} />
+          </View>
+        </View>
+
+        {/* Mobile Navigation Menu */}
+        <View style={styles.mobileNavMenu}>
+          <View style={styles.mobileNavRow}>
+            <TouchableOpacity style={styles.mobileNavButton}>
+              <Text style={styles.mobileNavButtonText}>Post a Task</Text>
+            </TouchableOpacity>
+            <View ref={dropdownRef} style={styles.mobileDropdownContainer}>
+              <TouchableOpacity 
+                style={styles.mobileNavLink}
+                onPress={() => setShowCategories(!showCategories)}
+              >
+                <Text style={styles.mobileNavLinkText}>Browse Tasks</Text>
+              </TouchableOpacity>
+              {showCategories && (
+                <View style={styles.mobileCategoriesDropdown}>
+                  <View style={styles.mobileDropdownContent}>
+                    <View style={styles.mobileDropdownColumn}>
+                      {categories.map((cat) => (
+                        <View 
+                          key={cat} 
+                          style={styles.mobileDropdownItem} 
+                          onTouchEnd={() => handleCategoryClick(cat)}
+                        >
+                          <Text style={styles.mobileDropdownItemText}>{cat}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                </View>
+              )}
+            </View>
+          </View>
+          <View style={styles.mobileNavRow}>
+            <TouchableOpacity style={styles.mobileNavLink}>
+              <Text style={styles.mobileNavLinkText}>How it works</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.mobileNavLink}>
+              <Text style={styles.mobileNavLinkText}>Benefits</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.mobileNavLink}>
+              <Text style={styles.mobileNavLinkText}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.mobileNavLink}>
+              <Text style={styles.mobileNavLinkText}>Signup</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.mobileNavRow}>
+            <TouchableOpacity style={styles.mobileNavButton}>
+              <Text style={styles.mobileNavButtonText}>Become a Tasker</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -141,7 +237,11 @@ const PerformerHomeScreen = () => {
         {/* Task List */}
         <ScrollView style={styles.mobileTaskList} contentContainerStyle={{ paddingBottom: 100 }}>
           {dummyTasks.map(task => (
-            <View key={task.id} style={styles.mobileTaskCard}>
+            <TouchableOpacity 
+              key={task.id} 
+              style={styles.mobileTaskCard}
+              onPress={() => handleTaskClick(task.id)}
+            >
               <View style={styles.mobileTaskContent}>
                 <View style={styles.mobileTaskLeft}>
                   <Text style={styles.mobileTaskTitle}>{task.title}</Text>
@@ -157,7 +257,13 @@ const PerformerHomeScreen = () => {
                   <Image source={{ uri: task.avatar }} style={styles.mobileAvatar} />
                 </View>
               </View>
-            </View>
+              <TouchableOpacity 
+                style={styles.mobileOpenButton}
+                onPress={() => handleOpenClick(task.id)}
+              >
+                <Text style={styles.mobileOpenButtonText}>Open</Text>
+              </TouchableOpacity>
+            </TouchableOpacity>
           ))}
         </ScrollView>
 
@@ -209,9 +315,38 @@ const PerformerHomeScreen = () => {
             <TouchableOpacity style={styles.desktopMenuButton}>
               <Text style={styles.desktopMenuButtonText}>Post a Task</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.desktopMenuLink}>
-              <Text style={styles.desktopMenuLinkText}>Browse Tasks</Text>
-            </TouchableOpacity>
+            <View ref={dropdownRef} style={styles.desktopDropdownContainer}>
+              <TouchableOpacity 
+                style={styles.desktopMenuLink}
+                onPress={() => setShowCategories(!showCategories)}
+              >
+                <Text style={styles.desktopMenuLinkText}>Browse Tasks</Text>
+              </TouchableOpacity>
+              {showCategories && (
+                <View style={styles.desktopCategoriesDropdown}>
+                  <View style={styles.desktopDropdownContent}>
+                    {Array.from({ length: 4 }).map((_, colIdx) => (
+                      <View key={colIdx} style={styles.desktopDropdownColumn}>
+                        {categories
+                          .slice(
+                            Math.floor((categories.length / 4) * colIdx),
+                            Math.floor((categories.length / 4) * (colIdx + 1))
+                          )
+                          .map((cat) => (
+                            <View 
+                              key={cat} 
+                              style={styles.desktopDropdownItem} 
+                              onTouchEnd={() => handleCategoryClick(cat)}
+                            >
+                              <Text style={styles.desktopDropdownItemText}>{cat}</Text>
+                            </View>
+                          ))}
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              )}
+            </View>
             <TouchableOpacity style={styles.desktopMenuLink}>
               <Text style={styles.desktopMenuLinkText}>My Tasks</Text>
             </TouchableOpacity>
@@ -267,7 +402,11 @@ const PerformerHomeScreen = () => {
             contentContainerStyle={styles.desktopTaskListContent}
           >
             {dummyTasks.map(task => (
-              <View key={task.id} style={styles.desktopTaskCard}>
+              <TouchableOpacity 
+                key={task.id} 
+                style={styles.desktopTaskCard}
+                onPress={() => handleTaskClick(task.id)}
+              >
                 <View style={styles.desktopTaskContent}>
                   <View style={styles.desktopTaskLeft}>
                     <Text style={styles.desktopTaskTitle}>{task.title}</Text>
@@ -283,7 +422,13 @@ const PerformerHomeScreen = () => {
                     <Image source={{ uri: task.avatar }} style={styles.desktopAvatar} />
                   </View>
                 </View>
-              </View>
+                <TouchableOpacity 
+                  style={styles.desktopOpenButton}
+                  onPress={() => handleOpenClick(task.id)}
+                >
+                  <Text style={styles.desktopOpenButtonText}>Open</Text>
+                </TouchableOpacity>
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
@@ -367,6 +512,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   desktopMenuLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 12,
   },
@@ -527,6 +674,15 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
   },
+  desktopOpenButton: {
+    alignSelf: 'flex-start',
+    marginTop: 10,
+  },
+  desktopOpenButtonText: {
+    color: PRIMARY_BLUE,
+    fontSize: 16,
+    fontWeight: '500',
+  },
   desktopMapSection: {
     flex: 1,
     backgroundColor: '#f9fafb',
@@ -581,6 +737,51 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#374151',
   },
+  desktopDropdownContainer: {
+    position: 'relative',
+  },
+  desktopDropdownIcon: {
+    fontSize: 12,
+    color: '#6b7280',
+    marginLeft: 4,
+  },
+  desktopCategoriesDropdown: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+    zIndex: 10,
+  },
+  desktopDropdownContent: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  desktopDropdownColumn: {
+    width: '48%', // Adjust as needed for 2 columns
+    gap: 8,
+  },
+  desktopDropdownItem: {
+    backgroundColor: '#f9fafb',
+    borderRadius: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  desktopDropdownItemText: {
+    fontSize: 13,
+    color: '#374151',
+    fontWeight: '500',
+  },
 
   // Mobile styles (existing)
   mobileContainer: {
@@ -621,6 +822,79 @@ const styles = StyleSheet.create({
   mobileLogoImage: {
     width: 32,
     height: 32,
+  },
+  mobileNavMenu: {
+    flexDirection: 'column', // Changed to column for mobile
+    paddingVertical: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  mobileNavRow: { // New style for rows within the menu
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  mobileNavButton: {
+    backgroundColor: '#ffcc30',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  mobileNavButtonText: {
+    color: '#111827',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  mobileNavLink: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+  },
+  mobileNavLinkText: {
+    color: '#6b7280',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  mobileDropdownContainer: {
+    position: 'relative',
+  },
+  mobileCategoriesDropdown: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+    zIndex: 10,
+    width: 300, // Fixed width for mobile
+    maxHeight: 400, // Max height for mobile
+  },
+  mobileDropdownContent: {
+    flexDirection: 'column', // Changed to column for mobile
+    gap: 8,
+  },
+  mobileDropdownColumn: {
+    width: '100%', // Full width for mobile
+    gap: 8,
+  },
+  mobileDropdownItem: {
+    backgroundColor: '#f9fafb',
+    borderRadius: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  mobileDropdownItemText: {
+    fontSize: 13,
+    color: '#374151',
+    fontWeight: '500',
   },
   mobileSearchRow: {
     flexDirection: 'row',
@@ -724,6 +998,15 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
+  },
+  mobileOpenButton: {
+    alignSelf: 'flex-start',
+    marginTop: 10,
+  },
+  mobileOpenButtonText: {
+    color: PRIMARY_BLUE,
+    fontSize: 14,
+    fontWeight: '500',
   },
   mobileBottomNav: {
     position: 'absolute',

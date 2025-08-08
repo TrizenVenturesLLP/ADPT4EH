@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -10,11 +10,29 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
+import { useNavigation } from './SimpleNavigation';
 import Footer from './Footer';
 
+
+
+const categories = [
+  "Accountants", "Admin", "Alterations", "Appliances", "Assembly", "Auto Electricians", "Bakers", "Barbers", "Beauticians", "Bicycle Service", "Bricklaying", "Building & Construction", "Business", "Car Body Work", "Car Detailing", "Car Repair", "Car Service", "Carpentry", "Cat Care", "Catering", "Chef", "Cladding", "Cleaning", "Computers & IT", "Concreting", "Decking", "Delivery", "Design", "Dog Care", "Draftsman", "Driving", "Electricians", "Entertainment", "Events", "Fencing", "Flooring", "Florist", "Furniture Assembly", "Gardening", "Gate Installation", "Hairdressers", "Handyman", "Heating & Cooling", "Home", "Automation And Security", "Home Theatre", "Interior Designer", "Landscaping", "Laundry", "Lawn Care", "Lessons", "Locksmith", "Makeup Artist", "Marketing", "Mobile Mechanic", "Painting", "Paving", "Pet Care", "Photographers", "Plasterer", "Plumbing", "Pool Maintenance", "Removals", "Roofing", "Sharpening", "Staffing", "Tailors", "Tattoo Artists", "Tiling", "Tradesman", "Tutoring", "Wall Hanging & Mounting", "Wallpapering", "Waterproofing", "Web", "Wheel & Tyre Service", "Writing"
+];
+
 const PosterHomeScreen: React.FC = () => {
+  const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileView, setIsMobileView] = useState(false);
+  const [showCategories, setShowCategories] = useState(false);
+  const dropdownRef = useRef<any>(null);
+
+  // Handle category selection
+  const handleCategoryClick = (category: string) => {
+    console.log(`Selected category: ${category}`);
+    setShowCategories(false);
+    // Prevent default navigation behavior
+    return false;
+  };
 
   // Check if we're on mobile web view
   useEffect(() => {
@@ -33,6 +51,22 @@ const PosterHomeScreen: React.FC = () => {
       return () => subscription?.remove();
     }
   }, []);
+
+  // Handle dropdown click outside
+  useEffect(() => {
+    if (!showCategories) return;
+    
+    const handleClickOutside = (event: any) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowCategories(false);
+      }
+    };
+
+    if (Platform.OS === 'web') {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [showCategories]);
 
   const serviceCategories = [
     {
@@ -182,6 +216,59 @@ const PosterHomeScreen: React.FC = () => {
           </View>
         </View>
 
+        {/* Mobile Navigation Menu */}
+        <View style={styles.mobileNavMenu}>
+          <View style={styles.mobileNavRow}>
+            <TouchableOpacity style={styles.mobileNavButton}>
+              <Text style={styles.mobileNavButtonText}>Post a Task</Text>
+            </TouchableOpacity>
+            <View ref={dropdownRef} style={styles.mobileDropdownContainer}>
+              <TouchableOpacity 
+                style={styles.mobileNavLink}
+                onPress={() => setShowCategories(!showCategories)}
+              >
+                <Text style={styles.mobileNavLinkText}>Browse Tasks</Text>
+              </TouchableOpacity>
+              {showCategories && (
+                <View style={styles.mobileCategoriesDropdown}>
+                  <View style={styles.mobileDropdownContent}>
+                    <View style={styles.mobileDropdownColumn}>
+                      {categories.map((cat) => (
+                        <View 
+                          key={cat} 
+                          style={styles.mobileDropdownItem} 
+                          onTouchEnd={() => handleCategoryClick(cat)}
+                        >
+                          <Text style={styles.mobileDropdownItemText}>{cat}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                </View>
+              )}
+            </View>
+          </View>
+          <View style={styles.mobileNavRow}>
+            <TouchableOpacity style={styles.mobileNavLink}>
+              <Text style={styles.mobileNavLinkText}>How it works</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.mobileNavLink}>
+              <Text style={styles.mobileNavLinkText}>Benefits</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.mobileNavLink}>
+              <Text style={styles.mobileNavLinkText}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.mobileNavLink}>
+              <Text style={styles.mobileNavLinkText}>Signup</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.mobileNavRow}>
+            <TouchableOpacity style={styles.mobileNavButton}>
+              <Text style={styles.mobileNavButtonText}>Become a Tasker</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
         {/* Scrollable Content */}
         <ScrollView 
           style={styles.mobileScrollableContent} 
@@ -275,7 +362,10 @@ const PosterHomeScreen: React.FC = () => {
             <Text style={styles.mobileNavIcon}>☐</Text>
             <Text style={styles.mobileNavText}>Tasks</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.mobileNavItem}>
+          <TouchableOpacity 
+            style={styles.mobileNavItem}
+            onPress={() => navigation.navigate('TaskPostingForm')}
+          >
             <Text style={styles.mobileNavIcon}>＋</Text>
             <Text style={styles.mobileNavText}>Post / Discover</Text>
           </TouchableOpacity>
@@ -283,7 +373,10 @@ const PosterHomeScreen: React.FC = () => {
             <Text style={styles.mobileNavIcon}>○</Text>
             <Text style={styles.mobileNavText}>Chat</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.mobileNavItem}>
+          <TouchableOpacity 
+            style={styles.mobileNavItem}
+            onPress={() => navigation.navigate('Profile')}
+          >
             <Text style={styles.mobileNavIcon}>⚪</Text>
             <Text style={styles.mobileNavText}>Account</Text>
           </TouchableOpacity>
@@ -310,12 +403,44 @@ const PosterHomeScreen: React.FC = () => {
           
           {/* Center: Navigation Menu */}
           <View style={styles.desktopCenterMenu}>
-            <TouchableOpacity style={styles.desktopMenuButton}>
+            <TouchableOpacity 
+              style={styles.desktopMenuButton}
+              onPress={() => navigation.navigate('TaskPostingForm')}
+            >
               <Text style={styles.desktopMenuButtonText}>Post a Task</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.desktopMenuLink}>
-              <Text style={styles.desktopMenuLinkText}>Browse Tasks</Text>
-            </TouchableOpacity>
+            <View ref={dropdownRef} style={styles.desktopDropdownContainer}>
+              <TouchableOpacity 
+                style={styles.desktopMenuLink}
+                onPress={() => setShowCategories(!showCategories)}
+              >
+                <Text style={styles.desktopMenuLinkText}>Browse Tasks</Text>
+              </TouchableOpacity>
+              {showCategories && (
+                <View style={styles.desktopCategoriesDropdown}>
+                  <View style={styles.desktopDropdownContent}>
+                    {Array.from({ length: 4 }).map((_, colIdx) => (
+                      <View key={colIdx} style={styles.desktopDropdownColumn}>
+                        {categories
+                          .slice(
+                            Math.floor((categories.length / 4) * colIdx),
+                            Math.floor((categories.length / 4) * (colIdx + 1))
+                          )
+                          .map((cat) => (
+                            <View 
+                              key={cat} 
+                              style={styles.desktopDropdownItem} 
+                              onTouchEnd={() => handleCategoryClick(cat)}
+                            >
+                              <Text style={styles.desktopDropdownItemText}>{cat}</Text>
+                            </View>
+                          ))}
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              )}
+            </View>
             <TouchableOpacity style={styles.desktopMenuLink}>
               <Text style={styles.desktopMenuLinkText}>How it works</Text>
             </TouchableOpacity>
@@ -326,7 +451,10 @@ const PosterHomeScreen: React.FC = () => {
           
           {/* Right: Profile Icon */}
           <View style={styles.desktopRightMenu}>
-            <TouchableOpacity style={styles.desktopProfileButton}>
+            <TouchableOpacity 
+              style={styles.desktopProfileButton}
+              onPress={() => navigation.navigate('Profile')}
+            >
               <Text style={styles.desktopProfileIcon}>👤</Text>
             </TouchableOpacity>
           </View>
@@ -1081,12 +1209,58 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   desktopMenuLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 12,
   },
   desktopMenuLinkText: {
     color: '#6b7280',
     fontSize: 16,
+    fontWeight: '500',
+  },
+  desktopDropdownContainer: {
+    position: 'relative',
+  },
+  desktopDropdownIcon: {
+    fontSize: 16,
+    marginLeft: 8,
+  },
+  desktopCategoriesDropdown: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    zIndex: 10,
+    width: '100%',
+  },
+  desktopDropdownContent: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    padding: 12,
+  },
+  desktopDropdownColumn: {
+    width: '48%', // Two columns
+    marginBottom: 12,
+  },
+  desktopDropdownItem: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 6,
+    backgroundColor: '#f0f0f0',
+  },
+  desktopDropdownItemText: {
+    fontSize: 14,
+    color: '#333',
     fontWeight: '500',
   },
   desktopRightMenu: {
@@ -1423,6 +1597,80 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
     marginBottom: 20,
+  },
+  mobileNavMenu: {
+    backgroundColor: '#fff',
+    paddingTop: 10,
+    paddingBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
+  mobileNavRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 15,
+  },
+  mobileNavButton: {
+    backgroundColor: '#ffcc30',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  mobileNavButtonText: {
+    color: '#111827',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  mobileNavLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  mobileNavLinkText: {
+    color: '#6b7280',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  mobileDropdownContainer: {
+    position: 'relative',
+  },
+  mobileCategoriesDropdown: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    zIndex: 10,
+    width: '100%',
+  },
+  mobileDropdownContent: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    padding: 12,
+  },
+  mobileDropdownColumn: {
+    width: '100%', // Single column for mobile
+    marginBottom: 12,
+  },
+  mobileDropdownItem: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 6,
+    backgroundColor: '#f0f0f0',
+  },
+  mobileDropdownItemText: {
+    fontSize: 14,
+    color: '#333',
+    fontWeight: '500',
   },
 });
 

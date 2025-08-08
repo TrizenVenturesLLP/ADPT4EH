@@ -14,6 +14,10 @@ import LocationConfirmationScreen from './LocationConfirmationScreen';
 import RoleSelectionScreen from './RoleSelectionScreen';
 import PerformerHomeScreen from './PerformerHomeScreen';
 import PosterHomeScreen from './PosterHomeScreen';
+import ProfileScreen from './ProfileScreen';
+import TaskPostingForm from './TaskPostingForm';
+import TaskDetailsScreen from './TaskDetailsScreen';
+import TaskListingScreen from './TaskListingScreen';
 
 // Navigation context
 interface NavigationContextType {
@@ -262,6 +266,14 @@ const SimpleNavigation: React.FC = () => {
         return <PerformerHomeScreen />;
       case 'PosterHome':
         return <PosterHomeScreen />;
+      case 'Profile':
+        return <ProfileScreen />;
+      case 'TaskPostingForm':
+        return <TaskPostingForm />;
+      case 'TaskDetails':
+        return <TaskDetailsScreen />;
+      case 'TaskListing':
+        return <TaskListingScreen />;
       default:
         return Platform.OS === 'web' ? <WebLanding /> : <LandingScreen />;
     }
