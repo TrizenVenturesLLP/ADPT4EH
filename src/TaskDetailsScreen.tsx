@@ -58,7 +58,7 @@ const TaskDetailsScreen: React.FC = () => {
   }, []);
 
   const handleMakeOffer = () => {
-    Alert.alert('Make Offer', 'Offer functionality would be implemented here.');
+    navigation.navigate('MakeOfferDetails');
   };
 
   const handleFollow = () => {
