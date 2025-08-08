@@ -18,6 +18,7 @@ import ProfileScreen from './ProfileScreen';
 import TaskPostingForm from './TaskPostingForm';
 import TaskDetailsScreen from './TaskDetailsScreen';
 import TaskListingScreen from './TaskListingScreen';
+import BeforeMakeOfferScreen from './BeforeMakeOfferScreen';
 
 // Navigation context
 interface NavigationContextType {
@@ -274,6 +275,8 @@ const SimpleNavigation: React.FC = () => {
         return <TaskDetailsScreen />;
       case 'TaskListing':
         return <TaskListingScreen />;
+      case 'BeforeMakeOffer':
+        return <BeforeMakeOfferScreen />;
       default:
         return Platform.OS === 'web' ? <WebLanding /> : <LandingScreen />;
     }

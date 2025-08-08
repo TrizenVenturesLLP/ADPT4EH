@@ -58,7 +58,7 @@ const TaskDetailsScreen: React.FC = () => {
   }, []);
 
   const handleMakeOffer = () => {
-    Alert.alert('Make Offer', 'Offer functionality would be implemented here.');
+    navigation.navigate('BeforeMakeOffer');
   };
 
   const handleFollow = () => {
@@ -201,7 +201,7 @@ const TaskDetailsScreen: React.FC = () => {
             <View style={styles.mobileBudgetCard}>
               <Text style={styles.mobileBudgetLabel}>TASK BUDGET</Text>
               <Text style={styles.mobileBudgetAmount}>{taskData.budget}</Text>
-              <TouchableOpacity style={styles.mobileMakeOfferButton} onPress={handleMakeOffer}>
+              <TouchableOpacity testID="make-offer-button-mobile" style={styles.mobileMakeOfferButton} onPress={handleMakeOffer}>
                 <Text style={styles.mobileMakeOfferText}>Make an offer</Text>
               </TouchableOpacity>
             </View>
@@ -390,7 +390,7 @@ const TaskDetailsScreen: React.FC = () => {
           <View style={styles.desktopBudgetCard}>
             <Text style={styles.desktopBudgetLabel}>TASK BUDGET</Text>
             <Text style={styles.desktopBudgetAmount}>{taskData.budget}</Text>
-            <TouchableOpacity style={styles.desktopMakeOfferButton} onPress={handleMakeOffer}>
+                         <TouchableOpacity testID="make-offer-button-desktop" style={styles.desktopMakeOfferButton} onPress={handleMakeOffer}>
               <Text style={styles.desktopMakeOfferText}>Make an offer</Text>
             </TouchableOpacity>
           </View>
